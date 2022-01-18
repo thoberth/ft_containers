@@ -6,49 +6,44 @@
 /*   By: thoberth <thoberth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/10 14:48:51 by thoberth          #+#    #+#             */
-/*   Updated: 2022/01/10 17:57:11 by thoberth         ###   ########.fr       */
+/*   Updated: 2022/01/18 17:40:43 by thoberth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <iostream>
 #include <vector>
+#include <iterator>
+//#include <type_traits>
 #include "vector/vector.hpp"
+
+
+// // 1. the return type (bool) is only valid if T is an integral type:
+// // template <class T>
+// // typename std::enable_if<std::is_integral<T>::value,bool>::type
+// //   is_odd (T i) {return bool(i%2);}
+
+// // 2. the second template argument is only valid if T is an integral type:
+// template < class T,
+//            class = typename std::enable_if<std::is_integral<T>::value>::type>
+// bool is_even (T i) {return !bool(i%2);}
+
+// int main() {
+
+//   int i = 1;    // code does not compile if type of i is not integral
+
+//   std::cout << std::boolalpha;
+// //   std::cout << "i is odd: " << is_odd(i) << std::endl;
+//   std::cout << "i is even: " << is_even(i) << std::endl;
+
+//   return 0;}
 
 int main ()
 {
-  std::vector<int>::size_type sz;
+	ft::vector<int> test;
+	ft::vector<int>::iterator t = test.begin();
+	std::cout << &test << " = " << &t << std::endl;
 
-  std::vector<int> foo;
-  sz = foo.capacity();
-  std::cout << "making foo grow:\n";
-  for (int i=0; i<100; ++i) {
-    foo.push_back(i);
-	std::cout << "		i = " << i << std::endl;
-    if (sz!=foo.capacity()) {
-      sz = foo.capacity();
-      std::cout << "capacity changed: " << sz << '\n';
-    }
-  }
-
-  std::vector<int> bar;
-  sz = bar.capacity();
-  bar.reserve(100);   // this is the only difference with foo above
-  std::cout << "making bar grow:\n";
-  for (int i=0; i<150; ++i) {
-    bar.push_back(i);
-    if (sz!=bar.capacity()) {
-      sz = bar.capacity();
-      std::cout << "capacity changed: " << sz << '\n';
-    }
-  }
-  try{
-	bar.reserve(100);
-	std::cout << "taille changee ? " << bar.capacity() << std::endl;
-	std::cout << bar.size() << std::endl;
-  }
-  catch (std::exception & e)
-  {
-	  std::cout << "test" << e.what() << '\n';
-  }
-  return 0;
+	std::vector<int> test2;
+	std::vector<int>::iterator t2 = test2.begin();
+	std::cout << &test2 << " = " << &t2 << std::endl;
 }

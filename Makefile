@@ -6,7 +6,7 @@
 #    By: thoberth <thoberth@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/12/14 12:44:03 by thoberth          #+#    #+#              #
-#    Updated: 2022/01/10 17:50:55 by thoberth         ###   ########.fr        #
+#    Updated: 2022/01/18 16:58:05 by thoberth         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,6 +31,10 @@ HDR = vector/vector.hpp
 
 OBJS = ${SRCS:.cpp=.o}
 
+all: ${NAME}
+
+main.o : ${HDR}
+
 $(NAME): ${OBJS} ${HDR} ${SRCS}
 	@printf "\n$(BLUE)"
 	@printf "$(BLUE)Compiling files...\n"
@@ -38,7 +42,6 @@ $(NAME): ${OBJS} ${HDR} ${SRCS}
 	@printf "$(GREEN)[$(NAME) done][✔]$(RESET)\n"
 	@printf "\n"
 
-all: ${NAME}
 
 clean:
 	@printf "\n"
