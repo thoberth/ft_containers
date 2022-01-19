@@ -6,7 +6,7 @@
 /*   By: thoberth <thoberth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 15:27:34 by thoberth          #+#    #+#             */
-/*   Updated: 2022/01/18 17:45:47 by thoberth         ###   ########.fr       */
+/*   Updated: 2022/01/19 20:13:39 by thoberth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,10 @@ namespace ft {
 		/* Constructs a container with as many elements as the range [first,last),
 		**	with each element constructed from its corresponding
 		**	element in that range, in the same order. */
-		// template<class InputIterator>
-		// vector (InputIterator first, InputIterator last,
-		// 		const allocator_type& alloc = allocator_type(),
-		// 		typename ft::enable_if<ft::is_integral<T>::value>::type = NULL);
+		template<class InputIterator>
+		vector (InputIterator first, InputIterator last,
+				typename ft::enable_if<ft::is_integral<T>::value>::type* = 0,
+				const allocator_type& alloc = allocator_type());
 
 		/* Constructs a container with a copy of each of the elements in x,
 		**	in the same order. */
@@ -67,7 +67,8 @@ namespace ft {
 		~vector() { } // dont forget to define a body for destructor when its template class
 
 		vector& operator=(const vector& x) // this capacity = size de x et non capacity de x
-		{ (void)x;
+		{
+			this->_ptr = _alloc.allocate(x._size);
 		}
 
 		iterator begin()
@@ -78,7 +79,7 @@ namespace ft {
 
 		void reserve (size_type n)
 		{
-			this->*_ptr = allocator_type().allocate(n);
+			this->_ptr = allocator_type().allocate(n);
 		}
 
 	private :
