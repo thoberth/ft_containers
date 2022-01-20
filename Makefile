@@ -6,7 +6,7 @@
 #    By: thoberth <thoberth@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/12/14 12:44:03 by thoberth          #+#    #+#              #
-#    Updated: 2022/01/18 16:58:05 by thoberth         ###   ########.fr        #
+#    Updated: 2022/01/20 16:54:43 by thoberth         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,13 +42,11 @@ $(NAME): ${OBJS} ${HDR} ${SRCS}
 	@printf "$(GREEN)[$(NAME) done][✔]$(RESET)\n"
 	@printf "\n"
 
-
 clean:
 	@printf "\n"
 	@printf "$(RED)Erase files '.o'\n"
 	${RM} ${OBJS}
 	@printf "$(RESET)\n"
-
 
 fclean: clean
 	@printf "\n"

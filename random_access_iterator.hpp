@@ -6,7 +6,7 @@
 /*   By: thoberth <thoberth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/12 12:22:35 by thoberth          #+#    #+#             */
-/*   Updated: 2022/01/18 17:29:56 by thoberth         ###   ########.fr       */
+/*   Updated: 2022/01/20 12:21:15 by thoberth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,10 @@ namespace ft
 	class random_access_iterator
 	{
 		public :
-
 			typedef	std::ptrdiff_t					difference_type;
-			typedef	T							value_type;
-			typedef	T*							pointer;
-			typedef	T&							reference;
+			typedef	T								value_type;
+			typedef	T*								pointer;
+			typedef	T&								reference;
 			typedef	ft::random_access_iterator_tag	iterator_category;
 
 			random_access_iterator() : _elem(T()) {} // a modifier avec null_ptr
@@ -74,12 +73,6 @@ namespace ft
 		random_access_iterator& operator+(int val) { return (this->_elem + val); }
 
 		random_access_iterator& operator-(int val) { return (this->_elem - val); }
-
-		template<class InputIterator, class Distance>
-		void advance(InputIterator& it, Distance n)
-		{
-			it + n;
-		}
 
 		private :
 			pointer	_elem;
