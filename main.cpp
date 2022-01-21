@@ -6,7 +6,7 @@
 /*   By: thoberth <thoberth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/10 14:48:51 by thoberth          #+#    #+#             */
-/*   Updated: 2022/01/20 19:15:03 by thoberth         ###   ########.fr       */
+/*   Updated: 2022/01/21 19:33:33 by thoberth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,19 +36,90 @@
 
 //   return 0;}
 
+// using namespace std;
+// int main()
+// {
+  
+//     // allocator for integer values
+//     allocator<int> myAllocator; // = _alloc dans mon vector
+  
+//     // allocate space for five ints
+//     int* arr = myAllocator.allocate(5); // = malloc ou new
+  
+//     // construct arr[0] and arr[3]
+//     myAllocator.construct(arr, 100);
+//     arr[3] = 10;
+  
+//     cout << arr[3] << endl;
+//     cout << arr[0] << endl;
+  
+//     // deallocate space for five ints
+//     myAllocator.deallocate(arr, 5);
+  
+//     return 0;
+// }
 
-int main ()
+
+// using namespace std;
+  
+// int main()
+// {
+  
+//     // allocator for string values
+//     allocator<string> myAllocator;
+  
+//     // allocate space for three strings
+//     string* str = myAllocator.allocate(3);
+  
+//     // construct these 3 strings
+//     myAllocator.construct(str, "Geeks");
+//     myAllocator.construct(str + 1, "for");
+//     myAllocator.construct(str + 2, "Geeks");
+  
+//     cout << str[0] << str[1] << str[2];
+  
+//     // destroy these 3 strings
+//     myAllocator.destroy(str);
+//     myAllocator.destroy(str + 1);
+//     myAllocator.destroy(str + 2);
+  
+//     // deallocate space for 3 strings
+//     myAllocator.deallocate(str, 3);
+// }
+
+int main()
 {
-	std::vector<int> test2;
-	ft::vector<int> test;
+	std::vector<int> test;
+	std::vector<int> test2(24);
+	std::vector<int>::iterator it = test.begin();
+	std::cout << "size = " << test.size() << " capacity = " << test.capacity() << std::endl;
+	test.insert(it, 8);
+	std::cout << "size = " << test.size() << " capacity = " << test.capacity() << std::endl;
+	it = test.begin();
+	test.insert(it +1, 8);
+	std::cout << "size = " << test.size() << " capacity = " << test.capacity() << std::endl;
+	it = test.begin();
+	test.insert(it +2, 8);
+	std::cout << "size = " << test.size() << " capacity = " << test.capacity() << std::endl;
+	it = test.begin();
+	test.insert(it +3, 8);
+	std::cout << "size = " << test.size() << " capacity = " << test.capacity() << std::endl;
+	it = test.begin();
+	test.insert(it +4, 8);
+	std::cout << "size = " << test.size() << " capacity = " << test.capacity() << std::endl;
+	it = test.begin();
+	test.insert(it +5, 8);
+	std::cout << "size = " << test.size() << " capacity = " << test.capacity() << std::endl;
+	it = test.begin();
+	for(; it != test.end(); it++)
+		std::cout << *it << std::endl;
+	it = test.begin();
+	std::cout << '\n' << std::endl;
+	test.insert(it +3, 4);
+	for(; it != test.end(); it++)
+		std::cout << *it << std::endl;
+	std::cout << "size = " << test.size() << " capacity = " << test.capacity() << std::endl;
 
-	ft::vector<int>::iterator const it = test.begin();
-	ft::vector<int>::iterator const ite = test.end();
-	(void)it;
-	(void)ite;
-	std::cout << /*test2.at(0) << */" // " << test.at(0) << std::endl;
-	test2.resize(8, 5);
-	std::cout << test2.size() << " // " << test2.capacity() << std::endl;
-	test2.resize(3, 5);
-	std::cout << test2.size() << " // " << test2.capacity() << std::endl;
+	// test = test;
+	// std::cout << "size = " << test.size() << " capacity = " << test.capacity() << std::endl;
 }
