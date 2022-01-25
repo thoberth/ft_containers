@@ -6,7 +6,7 @@
 /*   By: thoberth <thoberth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/12 12:22:35 by thoberth          #+#    #+#             */
-/*   Updated: 2022/01/20 12:21:15 by thoberth         ###   ########.fr       */
+/*   Updated: 2022/01/25 06:07:36 by thoberth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,16 +28,16 @@ namespace ft
 			typedef	T&								reference;
 			typedef	ft::random_access_iterator_tag	iterator_category;
 
-			random_access_iterator() : _elem(T()) {} // a modifier avec null_ptr
+			random_access_iterator() : _elem(0) {}
 
-			random_access_iterator(const random_access_iterator & src) { 
-				this->_elem = src._elem; }
+			random_access_iterator(random_access_iterator const & src) : _elem(src._elem)
+			{ }
 
 			random_access_iterator(pointer elem) : _elem(elem) {}
 
-			const pointer &		getElem() { return this->_elem; }
+			const pointer &		getElem() const { return this->_elem; }
 
-			random_access_iterator&	operator=(random_access_iterator &to_copy)
+			random_access_iterator&	operator=(random_access_iterator const& to_copy)
 			{
 				this->_elem = to_copy._elem;
 				return *this;
@@ -54,25 +54,38 @@ namespace ft
 				this->_elem++; 
 				return *this; }
 
-			void operator++(int)
-			{ this->operator++(); }
+			random_access_iterator operator++(int)
+			{
+				random_access_iterator rtn(*this);
+				operator++();
+				return (rtn);
+			}
 
 			random_access_iterator& operator--()
 			{
 				this->_elem--; 
 				return *this; }
 
-			void operator--(int)
-			{ this->operator--(); }
+			random_access_iterator operator--(int)
+			{
+				random_access_iterator rtn(*this);
+				operator--();
+				return (rtn);
+			}
 
 			reference operator[](const int val)
 			{
 				return this->_elem[val];
 			}
 
-		random_access_iterator& operator+(int val) { return (this->_elem + val); }
+			operator random_access_iterator<const value_type>() const
+			{
+				return _elem;
+			}
 
-		random_access_iterator& operator-(int val) { return (this->_elem - val); }
+		random_access_iterator operator+(int val) { return (this->_elem + val); }
+
+		random_access_iterator operator-(int val) { return (this->_elem - val); }
 
 		private :
 			pointer	_elem;
@@ -132,7 +145,30 @@ namespace ft
 		return (false);
 	}
 
+	template<typename T>
+	ft::random_access_iterator<T> operator+(
+		typename ft::random_access_iterator<T>::difference_type n,
+		typename ft::random_access_iterator<T>& rai)
+		{
+			return (&(*rai) + n);
+		}
 
+	template <typename T>
+	typename ft::random_access_iterator<T>::difference_type
+	operator-(const ft::random_access_iterator<T> lhs,
+			const ft::random_access_iterator<T> rhs)
+	{
+		return (lhs.getElem() - rhs.getElem());
+	}
+
+	/* Same for const and not const */
+	template <typename T_R, typename T_L>
+	typename ft::random_access_iterator<T_R>::difference_type
+	operator-(const ft::random_access_iterator<T_L> lhs,
+			const ft::random_access_iterator<T_R> rhs)
+	{
+		return (lhs.getElem() - rhs.getElem());
+	}
 }
 
 #endif
