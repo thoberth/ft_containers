@@ -6,7 +6,7 @@
 /*   By: thoberth <thoberth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/10 14:48:51 by thoberth          #+#    #+#             */
-/*   Updated: 2022/01/25 05:59:55 by thoberth         ###   ########.fr       */
+/*   Updated: 2022/01/26 16:02:35 by thoberth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,19 +93,7 @@
 int main ()
 {
   ft::vector<int> foo (3,100);   // three ints with a value of 100
-  ft::vector<int> bar (5,200);   // five ints with a value of 200
-
-  foo.swap(bar);
-
-  std::cout << "foo contains: " << foo.size() << " " << foo.capacity();
-  for (unsigned i=0; i<foo.size(); i++)
-    std::cout << ' ' << foo[i];
-  std::cout << '\n';
-
-  std::cout << "bar contains: " << bar.size() << " " << bar.capacity();
-  for (unsigned i=0; i<bar.size(); i++)
-    std::cout << ' ' << bar[i];
-  std::cout << '\n';
+  ft::vector<int>::iterator it = 2 + foo.begin();
 
   return 0;
 }

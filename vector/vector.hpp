@@ -6,7 +6,7 @@
 /*   By: thoberth <thoberth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 15:27:34 by thoberth          #+#    #+#             */
-/*   Updated: 2022/01/25 07:03:03 by thoberth         ###   ########.fr       */
+/*   Updated: 2022/01/26 19:12:24 by thoberth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,12 @@ namespace ft {
 				typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type* = 0,
 				const allocator_type& alloc = allocator_type()) : _alloc(alloc) , _size(0), _capacity(0)
 		{
-			_ptr = _alloc.allocate(last - first);
-			_capacity = last - first;
+			size_type len = 0;
+			InputIterator tmp = first;
+			while (tmp++ != last)
+				len++;
+			_ptr = _alloc.allocate(len);
+			_capacity = len;
 			for (size_type i = 0; first != last; i++, first++)
 			{
 				_alloc.construct(_ptr + i, *first);
@@ -231,21 +235,30 @@ namespace ft {
 		void assign (InputIterator first, InputIterator last,
 			typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type* = 0)
 		{
+			InputIterator tmp = first;
+			size_type len = 0;
+			while (tmp++ != last)
+				len++;
+			if (_capacity == 0 && len > 0)
+			{
+				reserve(1);
+			}
 			this->clear();
-			if ((last - first) > static_cast<long>(_capacity))
-				this->reserve(last - first);
-			for(; first != last; first++)
-				this->insert(first, *first);
+			if (len > _capacity)
+				this->reserve(len);
+			insert(this->begin(), first, last);
 		}
 
-		void assign (size_type n, const value_type& val)
+		void assign (size_type n, const value_type& val) // 4 21
 		{
 			this->clear();
 			if (n > _capacity)
 				this->reserve(n);
 			iterator it = this->begin();
 			for(size_type i(0); i < n ; i++, it++)
+			{
 				this->insert(it, val);
+			}
 		}
 
 		void push_back (const value_type& val)
@@ -269,26 +282,42 @@ namespace ft {
 		void insert (iterator position, size_type n, const value_type& val)
 		{
 			difference_type index = position - this->begin();
-			difference_type indexbis = index;
-			int i = n;
-			int t = _size;
+			size_type indexbis = index;
+			int to_construct = _size - indexbis;
+			int i = n - to_construct;
+			size_type j = _size;
+			size_type t = _size;
 
 			if (_capacity == 0)
 				reserve(1);
-			while (_size + n >= _capacity)
-			{
+			while (_size + n > _capacity)
 				reserve(_capacity * 2);
-			}
-			while (i)
+			if (_size != 0)
 			{
-				_alloc.construct((_ptr + t++), _ptr[index++]);
-				i--;
+				while (to_construct)
+				{
+					_alloc.construct(_ptr + _size++, _ptr[--j]);
+					to_construct--;
+				}
+				while (i)
+				{
+					_ptr[t--] = _ptr[indexbis++ + n];
+					i--;
+				}
+				i = n;
+				while (i)
+				{
+					_ptr[index++] = val;
+					i--;
+				}
 			}
-			_size += n;
-			while (n)
+			else
 			{
-				_ptr[indexbis++] = val;
-				n--;
+				while (i)
+				{
+					_alloc.construct((_ptr + _size++), val);
+					i--;
+				}
 			}
 		}
 
@@ -296,10 +325,13 @@ namespace ft {
 		void insert (iterator position, InputIterator first, InputIterator last,
 			typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type* = 0)
 		{
-			difference_type len = last - first;
+			size_type len = 0;
+			InputIterator tmp = first;
 			difference_type index = position - this->begin();
 			difference_type indexbis = index;
 
+			while (tmp++ != last)
+				len++;
 			if (_capacity == 0)
 				reserve(1);
 			if (len + _size >= _capacity)
@@ -327,13 +359,12 @@ namespace ft {
 			difference_type index = first - this->begin();
 			difference_type to_ret = index;
 
-			while (first != last)
+			while (first != (this->end() - 1))
 			{
 				_ptr[index] = _ptr[index + len];
 				first++;
 				index++;
 			}
-			_ptr[index] = _ptr[index + len];
 			while (len)
 			{
 				_alloc.destroy(&_ptr[_size-- - 1]);

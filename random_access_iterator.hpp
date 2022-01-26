@@ -6,7 +6,7 @@
 /*   By: thoberth <thoberth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/12 12:22:35 by thoberth          #+#    #+#             */
-/*   Updated: 2022/01/25 06:07:36 by thoberth         ###   ########.fr       */
+/*   Updated: 2022/01/26 16:18:13 by thoberth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,14 @@ namespace ft
 		random_access_iterator operator+(int val) { return (this->_elem + val); }
 
 		random_access_iterator operator-(int val) { return (this->_elem - val); }
+
+		random_access_iterator operator+=(int val) {
+			this->_elem += val;
+			return *this; }
+
+		random_access_iterator operator-=(int val) { 
+			this->_elem -= val;
+			return *this; }
 
 		private :
 			pointer	_elem;
