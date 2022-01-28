@@ -6,7 +6,7 @@
 /*   By: thoberth <thoberth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/12 12:22:35 by thoberth          #+#    #+#             */
-/*   Updated: 2022/01/26 16:18:13 by thoberth         ###   ########.fr       */
+/*   Updated: 2022/01/28 17:57:50 by thoberth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,16 +35,17 @@ namespace ft
 
 			random_access_iterator(pointer elem) : _elem(elem) {}
 
-			const pointer &		getElem() const { return this->_elem; }
+			reference	base() const { return *this->_elem; }
 
-			random_access_iterator&	operator=(random_access_iterator const& to_copy)
+			random_access_iterator&	operator=(const random_access_iterator &to_copy)
 			{
-				this->_elem = to_copy._elem;
+				if (this != &to_copy)
+					this->_elem = to_copy._elem;
 				return *this;
 			}
 
 			reference operator*()
-			{ return *this->getElem(); }
+			{ return *this->base(); }
 
 			pointer	operator->()
 			{ return &this->operator*(); }
@@ -80,7 +81,7 @@ namespace ft
 
 			operator random_access_iterator<const value_type>() const
 			{
-				return _elem;
+				return random_access_iterator<const value_type>(this->_elem);
 			}
 
 		random_access_iterator operator+(int val) { return (this->_elem + val); }
@@ -95,6 +96,11 @@ namespace ft
 			this->_elem -= val;
 			return *this; }
 
+		// difference_type operator-(const random_access_iterator &rhs) 
+		// {
+		// 	return (this->base() - rhs.base());
+		// }
+
 		private :
 			pointer	_elem;
 	};
@@ -103,7 +109,7 @@ namespace ft
 	bool operator==(const random_access_iterator<T> & A,
 		const random_access_iterator<X> & B)
 	{
-		if (A.getElem() == B.getElem())
+		if (A.base() == B.base())
 			return (true);
 		return (false);
 	}
@@ -112,7 +118,7 @@ namespace ft
 	bool operator!=(const random_access_iterator<T> & A,
 		const random_access_iterator<X> & B)
 	{
-		if (A.getElem() != B.getElem())
+		if (A.base() != B.base())
 			return (true);
 		return (false);
 	}
@@ -121,7 +127,7 @@ namespace ft
 	bool operator>(const random_access_iterator<T> & A,
 		const random_access_iterator<X> & B)
 	{
-		if (A.getElem() > B.getElem())
+		if (A.base() > B.base())
 			return (true);
 		return (false);
 	}
@@ -130,7 +136,7 @@ namespace ft
 	bool operator<(const random_access_iterator<T> & A,
 		const random_access_iterator<X> & B)
 	{
-		if (A.getElem() < B.getElem())
+		if (A.base() < B.base())
 			return (true);
 		return (false);
 	}
@@ -139,7 +145,7 @@ namespace ft
 	bool operator>=(const random_access_iterator<T> & A,
 		const random_access_iterator<X> & B)
 	{
-		if (A.getElem() >= B.getElem())
+		if (A.base() >= B.base())
 			return (true);
 		return (false);
 	}
@@ -148,35 +154,16 @@ namespace ft
 	bool operator<=(const random_access_iterator<T> & A,
 		const random_access_iterator<X> & B)
 	{
-		if (A.getElem() <= B.getElem())
+		if (A.base() <= B.base())
 			return (true);
 		return (false);
 	}
-
-	template<typename T>
-	ft::random_access_iterator<T> operator+(
-		typename ft::random_access_iterator<T>::difference_type n,
-		typename ft::random_access_iterator<T>& rai)
-		{
-			return (&(*rai) + n);
-		}
-
-	template <typename T>
-	typename ft::random_access_iterator<T>::difference_type
-	operator-(const ft::random_access_iterator<T> lhs,
-			const ft::random_access_iterator<T> rhs)
-	{
-		return (lhs.getElem() - rhs.getElem());
-	}
-
-	/* Same for const and not const */
-	template <typename T_R, typename T_L>
-	typename ft::random_access_iterator<T_R>::difference_type
-	operator-(const ft::random_access_iterator<T_L> lhs,
-			const ft::random_access_iterator<T_R> rhs)
-	{
-		return (lhs.getElem() - rhs.getElem());
-	}
 }
+	template<typename T>
+	ft::random_access_iterator<T> operator+(int n,
+	const ft::random_access_iterator<T> &rai)
+		{
+			return (rai.base() + n);
+		}
 
 #endif

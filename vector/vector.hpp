@@ -6,7 +6,7 @@
 /*   By: thoberth <thoberth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 15:27:34 by thoberth          #+#    #+#             */
-/*   Updated: 2022/01/26 19:12:24 by thoberth         ###   ########.fr       */
+/*   Updated: 2022/01/28 16:32:59 by thoberth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,7 +156,7 @@ namespace ft {
 			else
 			{
 				while (this->_size > n)
-					this->erase(this->end());
+					this->erase(this->end() - 1);
 			}
 		}
 
@@ -268,7 +268,7 @@ namespace ft {
 
 		void pop_back()
 		{
-			erase(this->end()--);
+			erase(this->end() - 1);
 		}
 
 		// ne pas oublier d'incrementer la size
@@ -279,32 +279,34 @@ namespace ft {
 			insert(position, 1, val);
 			return(iterator(&_ptr[index]));
 		}
+
 		void insert (iterator position, size_type n, const value_type& val)
 		{
 			difference_type index = position - this->begin();
-			size_type indexbis = index;
-			int to_construct = _size - indexbis;
-			int i = n - to_construct;
+			int to_construct = n;
+			int to_move = _size - index;
+			int i = n;
 			size_type j = _size;
-			size_type t = _size;
 
 			if (_capacity == 0)
 				reserve(1);
 			while (_size + n > _capacity)
 				reserve(_capacity * 2);
-			if (_size != 0)
+			if (_size != 0 && static_cast<unsigned long>(index) != _size)
 			{
 				while (to_construct)
 				{
-					_alloc.construct(_ptr + _size++, _ptr[--j]);
+					_alloc.construct(_ptr + j++, 0);
 					to_construct--;
 				}
-				while (i)
+				j = _size - 1;
+				while (to_move)
 				{
-					_ptr[t--] = _ptr[indexbis++ + n];
-					i--;
+					_ptr[j + n] = _ptr[j] ;
+					j--;
+					to_move--;
 				}
-				i = n;
+				_size += n;
 				while (i)
 				{
 					_ptr[index++] = val;
@@ -329,6 +331,9 @@ namespace ft {
 			InputIterator tmp = first;
 			difference_type index = position - this->begin();
 			difference_type indexbis = index;
+			size_type to_move = _size - index;
+			size_type i = _size - 1;
+			size_type t;
 
 			while (tmp++ != last)
 				len++;
@@ -336,10 +341,17 @@ namespace ft {
 				reserve(1);
 			if (len + _size >= _capacity)
 				reserve(_size + len);
+			t = len;
 			while (len)
 			{
-				_alloc.construct((_ptr + _size++), _ptr[index++]);
+				_alloc.construct((_ptr + _size++), 0);
 				len--;
+			}
+			while (to_move)
+			{
+				_ptr[i + t] = _ptr[i] ;
+				i--;
+				to_move--;
 			}
 			while (first != last)
 			{
