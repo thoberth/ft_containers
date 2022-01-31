@@ -6,7 +6,7 @@
 /*   By: thoberth <thoberth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/29 16:06:33 by thoberth          #+#    #+#             */
-/*   Updated: 2022/01/31 23:28:42 by thoberth         ###   ########.fr       */
+/*   Updated: 2022/01/31 23:46:03 by thoberth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,11 +96,11 @@ namespace ft
 		}
 
 		reverse_iterator operator+(difference_type val) {
-			return reverse_iterator(this->_elem.base() - val);
+			return reverse_iterator(this->_elem - val);
 		}
 
 		reverse_iterator operator-(difference_type val) {
-			return reverse_iterator(this->_elem.base() + val);
+			return reverse_iterator(this->_elem + val);
 		}
 
 		reverse_iterator& operator+=(difference_type val)
