@@ -6,14 +6,15 @@
 /*   By: thoberth <thoberth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/12 12:22:35 by thoberth          #+#    #+#             */
-/*   Updated: 2022/01/28 17:57:50 by thoberth         ###   ########.fr       */
+/*   Updated: 2022/01/31 15:16:10 by thoberth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef RANDOM_ACCESS_ITERATOR_HPP
-# define RANDOM_ACCESS_ITERATOR_HPP
+#ifndef random_access_iterator_HPP
+# define random_access_iterator_HPP
 
 #include <iostream>
+#include "iterator.hpp"
 #include "iterator_traits.hpp"
 
 namespace ft
@@ -35,7 +36,7 @@ namespace ft
 
 			random_access_iterator(pointer elem) : _elem(elem) {}
 
-			reference	base() const { return *this->_elem; }
+			pointer	base() const { return this->_elem; }
 
 			random_access_iterator&	operator=(const random_access_iterator &to_copy)
 			{
@@ -74,7 +75,7 @@ namespace ft
 				return (rtn);
 			}
 
-			reference operator[](const int val)
+			reference operator[](difference_type val)
 			{
 				return this->_elem[val];
 			}
@@ -84,22 +85,17 @@ namespace ft
 				return random_access_iterator<const value_type>(this->_elem);
 			}
 
-		random_access_iterator operator+(int val) { return (this->_elem + val); }
+		random_access_iterator operator+(difference_type val) { return (this->_elem + val); }
 
-		random_access_iterator operator-(int val) { return (this->_elem - val); }
+		random_access_iterator operator-(difference_type val) { return (this->_elem - val); }
 
-		random_access_iterator operator+=(int val) {
+		random_access_iterator operator+=(difference_type val) {
 			this->_elem += val;
 			return *this; }
 
-		random_access_iterator operator-=(int val) { 
+		random_access_iterator operator-=(difference_type val) { 
 			this->_elem -= val;
 			return *this; }
-
-		// difference_type operator-(const random_access_iterator &rhs) 
-		// {
-		// 	return (this->base() - rhs.base());
-		// }
 
 		private :
 			pointer	_elem;
@@ -158,12 +154,31 @@ namespace ft
 			return (true);
 		return (false);
 	}
-}
+
+	template <typename T>
+	typename ft::random_access_iterator<T>::difference_type
+	operator-(const ft::random_access_iterator<T> lhs,
+			const ft::random_access_iterator<T> rhs)
+	{
+		return (lhs.base() - rhs.base());
+	}
+
+	/* For iterator - const_iterator */
+	template <typename T_L, typename T_R>
+	typename ft::random_access_iterator<T_L>::difference_type
+	operator-(const ft::random_access_iterator<T_L> lhs,
+			const ft::random_access_iterator<T_R> rhs)
+	{
+		return (lhs.base() - rhs.base());
+	}
+
 	template<typename T>
-	ft::random_access_iterator<T> operator+(int n,
-	const ft::random_access_iterator<T> &rai)
+	ft::random_access_iterator<T> operator+(
+		typename ft::random_access_iterator<T>::difference_type n,
+		typename ft::random_access_iterator<T>& rai)
 		{
-			return (rai.base() + n);
+			return (&(*rai) + n);
 		}
+}
 
 #endif

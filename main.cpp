@@ -6,7 +6,7 @@
 /*   By: thoberth <thoberth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/10 14:48:51 by thoberth          #+#    #+#             */
-/*   Updated: 2022/01/28 17:59:28 by thoberth         ###   ########.fr       */
+/*   Updated: 2022/01/31 16:55:34 by thoberth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,44 +92,13 @@
 
 int main ()
 {
-	std::vector<int> foo(10, 10);
-	std::vector<int>::iterator it = foo.begin();
-	std::vector<int>::iterator ite(it);
-
-	it = ite;
-
-	if (ite == it)
-		std::cout << "GOOD\n";
-	if (ite != it)
-		std::cout << "NOT GOOD\n";
+	std::vector<int> myvector(15);
+	for (int i(0); i < 15 ;i++)
+		myvector.push_back(i);
 	
-	std::cout << "*it = " << *it << '\n';
-	std::cout << "*it = 5 " << (*it = 5) << '\n';
-	std::cout << "++it = " << *(++it) << '\n';
-	std::cout << "it++ = " << *(it++) << '\n';
-	std::cout << "*it++ = " << (*it++) << '\n';
-
-	std::cout << "--it = " << *(--it) << '\n';
-	std::cout << "it-- = " << *(it--) << '\n';
-	std::cout << "*it-- = " << (*it--) << '\n';
-
-	it = ite + 2;
-	it = 2 + ite;
-	it = ite - 2;
-
-
-	if (ite < it)
-		std::cout << "GOOD\n";
-	if (ite > it)
-		std::cout << "GOOD\n";
-	if (ite <= it)
-		std::cout << "GOOD\n";
-	if (ite >= it)
-		std::cout << "GOOD\n";
-	it += 2;
-	ite -= 2;
-
-	it = foo.begin();
-	it[5] = 13;
+	std::cout << "begin = " << *myvector.begin() << std::endl;
+	std::cout << "rbegin = " << *myvector.rbegin() << std::endl;
+	std::cout << "end = " << *myvector.end() << std::endl;
+	std::cout << "rend = " << *myvector.rend() << std::endl;
 	return 0;
 }

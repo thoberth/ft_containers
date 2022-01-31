@@ -6,7 +6,7 @@
 /*   By: thoberth <thoberth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 15:27:34 by thoberth          #+#    #+#             */
-/*   Updated: 2022/01/28 16:32:59 by thoberth         ###   ########.fr       */
+/*   Updated: 2022/01/31 16:55:17 by thoberth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,8 @@
 #include <vector>
 #include <stdexcept>
 #include "../random_access_iterator.hpp"
+#include "../reverse_iterator.hpp"
 
-/*	Rappel : si on essaie d'ajouter un element et que size = capacity -> capacity * 2
-**	
-**	
-**	
-**	
-**	*/
 
 namespace ft {
 	template <class T, class Alloc = std::allocator<T> >
@@ -37,8 +32,8 @@ namespace ft {
 		typedef	typename allocator_type::const_pointer			const_pointer;
 		typedef	ft::random_access_iterator<value_type>			iterator;
 		typedef	ft::random_access_iterator<const value_type>	const_iterator;
-		//typedef	ft::reverse_iterator<iterator>					reverse_iterator;
-		//typedef	ft::const_reverse_iterator<const_iterator>		const_reverse_iterator;
+		typedef	ft::reverse_iterator<iterator>					reverse_iterator;
+		typedef	ft::reverse_iterator<const_iterator>			const_reverse_iterator;
 		typedef	typename ft::iterator_traits<iterator>::difference_type	difference_type;
 		typedef	size_t											size_type;
 
@@ -132,11 +127,17 @@ namespace ft {
 			return _ptr + _size;
 		}
 
-		// reverse_iterator rbegin();
-		// const_reverse_iterator rbegin() const;
+		reverse_iterator rbegin()
+		{ return reverse_iterator(this->end()); }
 
-		//	reverse_iterator rend();
-		//	const_reverse_iterator rend() const;
+		const_reverse_iterator rbegin() const
+		{ return const_reverse_iterator(this->end()); }
+
+		reverse_iterator rend()
+		{ return reverse_iterator(this->begin()); }
+
+		const_reverse_iterator rend() const
+		{ return const_reverse_iterator(this->begin()); }
 
 /* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
 **									CAPACITY FUNC									   **
@@ -412,10 +413,62 @@ namespace ft {
 			}
 		}
 
+		allocator_type get_allocator() const { return _alloc; }
+
 	private :
 		allocator_type	_alloc;
 		pointer			_ptr;
 		size_type		_size;
 		size_type		_capacity;
 	};
+
+	//use the equal algo
+	template <class T, class Alloc>
+	bool operator==(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
+	{
+		if (lhs.size()!= rhs.size())
+			return (false);
+		return (ft::equal(lhs.begin(), lhs.end(), rhs.begin()));
+	}
+
+	// is equal to (!(lhs == rhs))
+	template <class T, class Alloc>
+	bool operator!=(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
+	{
+		return (!(lhs == rhs));
+	}
+
+	// use the lexicographical_compare algo
+	template <class T, class Alloc>
+	bool operator<(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
+	{
+		return (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
+	}
+
+	// is equal to (!(rhs < lhs))
+	template <class T, class Alloc>
+	bool operator<=(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
+	{
+		return (!(rhs < lhs));
+	}
+
+	// is equal to (rhs < lhs) 
+	template <class T, class Alloc>
+	bool operator>(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
+	{
+		return (rhs < lhs);
+	}
+
+	// is equal to (!(lhs < rhs))
+	template <class T, class Alloc>
+	bool operator>=(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
+	{
+		return (!(lhs < rhs));
+	}
+
+	template <class T, class Alloc>
+	void swap(vector<T, Alloc> &x, vector<T, Alloc> &y)
+	{
+		x.swap(y);
+	}
 }

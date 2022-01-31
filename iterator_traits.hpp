@@ -6,7 +6,7 @@
 /*   By: thoberth <thoberth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 16:41:39 by thoberth          #+#    #+#             */
-/*   Updated: 2022/01/18 15:53:13 by thoberth         ###   ########.fr       */
+/*   Updated: 2022/01/29 16:54:05 by thoberth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,41 +20,41 @@ namespace ft
 {
 	/*	Version Generic */
 
-	template<class iterator>
+	template <class Iterator>
 	class iterator_traits
 	{
-		public:
-		typedef	typename iterator::difference_type		difference_type;
-		typedef	typename iterator::value_type			value_type;
-		typedef	typename iterator::pointer				pointer;
-		typedef	typename iterator::reference			reference;
-		typedef	typename iterator::iterator_category	iterator_category;
+	public:
+		typedef typename Iterator::difference_type difference_type;
+		typedef typename Iterator::value_type value_type;
+		typedef typename Iterator::pointer pointer;
+		typedef typename Iterator::reference reference;
+		typedef typename Iterator::iterator_category iterator_category;
 	};
 
 	/*	Specialization Type T* not const */
 
-	template<typename T>
-	class iterator_traits<T*>
+	template <typename T>
+	class iterator_traits<T *>
 	{
-		public:
-		typedef	std::ptrdiff_t					difference_type;
-		typedef	T							value_type;
-		typedef	T*							pointer;
-		typedef	T&							reference;
-		typedef	ft::random_access_iterator_tag	iterator_category;
+	public:
+		typedef std::ptrdiff_t difference_type;
+		typedef T value_type;
+		typedef T *pointer;
+		typedef T &reference;
+		typedef ft::random_access_iterator_tag iterator_category;
 	};
 
 	/*	Specialization Type T* const */
 
-	template<typename T>
-	class iterator_traits<const T*>
+	template <typename T>
+	class iterator_traits<const T *>
 	{
 	public:
-		typedef	std::ptrdiff_t					difference_type;
-		typedef	T							value_type;
-		typedef	const T*					pointer;
-		typedef	const T&					reference;
-		typedef	ft::random_access_iterator_tag	iterator_category;
+		typedef std::ptrdiff_t difference_type;
+		typedef T value_type;
+		typedef const T *pointer;
+		typedef const T &reference;
+		typedef ft::random_access_iterator_tag iterator_category;
 	};
 }
 
