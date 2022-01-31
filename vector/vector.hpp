@@ -6,7 +6,7 @@
 /*   By: thoberth <thoberth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 15:27:34 by thoberth          #+#    #+#             */
-/*   Updated: 2022/01/31 16:55:17 by thoberth         ###   ########.fr       */
+/*   Updated: 2022/01/31 20:09:07 by thoberth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -297,7 +297,7 @@ namespace ft {
 			{
 				while (to_construct)
 				{
-					_alloc.construct(_ptr + j++, 0);
+					_alloc.construct(_ptr + j++, T());
 					to_construct--;
 				}
 				j = _size - 1;
@@ -345,7 +345,7 @@ namespace ft {
 			t = len;
 			while (len)
 			{
-				_alloc.construct((_ptr + _size++), 0);
+				_alloc.construct((_ptr + _size++), T());
 				len--;
 			}
 			while (to_move)

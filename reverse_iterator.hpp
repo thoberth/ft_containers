@@ -6,7 +6,7 @@
 /*   By: thoberth <thoberth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/29 16:06:33 by thoberth          #+#    #+#             */
-/*   Updated: 2022/01/31 17:06:29 by thoberth         ###   ########.fr       */
+/*   Updated: 2022/01/31 23:28:42 by thoberth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,7 +141,7 @@ namespace ft
 	bool operator>(const reverse_iterator<T> &A,
 				   const reverse_iterator<X> &B)
 	{
-		if (A.base() > B.base())
+		if (A.base() < B.base())
 			return (true);
 		return (false);
 	}
@@ -150,7 +150,7 @@ namespace ft
 	bool operator<(const reverse_iterator<T> &A,
 				   const reverse_iterator<X> &B)
 	{
-		if (A.base() < B.base())
+		if (A.base() > B.base())
 			return (true);
 		return (false);
 	}
@@ -159,7 +159,7 @@ namespace ft
 	bool operator>=(const reverse_iterator<T> &A,
 					const reverse_iterator<X> &B)
 	{
-		if (A.base() >= B.base())
+		if (A.base() <= B.base())
 			return (true);
 		return (false);
 	}
@@ -168,7 +168,7 @@ namespace ft
 	bool operator<=(const reverse_iterator<T> &A,
 					const reverse_iterator<X> &B)
 	{
-		if (A.base() <= B.base())
+		if (A.base() >= B.base())
 			return (true);
 		return (false);
 	}
