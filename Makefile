@@ -27,7 +27,7 @@ NAME = executable
 
 SRCS = main.cpp
 
-HDR = vector/vector.hpp
+HDR = vector/vector.hpp map/map.hpp stack/stack.hpp
 
 OBJS = ${SRCS:.cpp=.o}
 

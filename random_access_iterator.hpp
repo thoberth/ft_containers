@@ -6,16 +6,14 @@
 /*   By: thoberth <thoberth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/12 12:22:35 by thoberth          #+#    #+#             */
-/*   Updated: 2022/01/31 15:16:10 by thoberth         ###   ########.fr       */
+/*   Updated: 2022/02/02 14:33:46 by thoberth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef random_access_iterator_HPP
 # define random_access_iterator_HPP
 
-#include <iostream>
 #include "iterator.hpp"
-#include "iterator_traits.hpp"
 
 namespace ft
 {

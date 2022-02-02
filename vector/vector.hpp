@@ -75,7 +75,7 @@ namespace ft {
 
 		/* Constructs a container with a copy of each of the elements in x,
 		**	in the same order. */
-		vector (const vector& x): _alloc(x._alloc), _ptr(NULL), _size(0), _capacity(0) // this capacity = size de x et non capacity de x
+		vector (const vector& x): _alloc(x._alloc), _ptr(NULL), _size(0), _capacity(0)
 		{
 			insert(this->begin(), x.begin(), x.end());
 		}
@@ -87,7 +87,7 @@ namespace ft {
 				_alloc.deallocate(_ptr, _capacity);
 		}
 
-		vector& operator=(const vector& x) // this capacity = size de x et non capacity de x
+		vector& operator=(const vector& x)
 		{
 			this->clear();
 			if (x._size > this->_capacity)
@@ -230,8 +230,8 @@ namespace ft {
 **									MODIFIER FUNC									   **
 ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
 
-	// Affecte un nouveau contenu au vecteur, remplaçant son contenu actuel,
-	// et modifiant sa taille en conséquence.
+		/* Affecte un nouveau contenu au vecteur, remplaçant son contenu actuel,
+		** et modifiant sa taille en conséquence. */
 		template <class InputIterator>
 		void assign (InputIterator first, InputIterator last,
 			typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type* = 0)
@@ -250,7 +250,7 @@ namespace ft {
 			insert(this->begin(), first, last);
 		}
 
-		void assign (size_type n, const value_type& val) // 4 21
+		void assign (size_type n, const value_type& val)
 		{
 			this->clear();
 			if (n > _capacity)
@@ -272,7 +272,7 @@ namespace ft {
 			erase(this->end() - 1);
 		}
 
-		// ne pas oublier d'incrementer la size
+		// don't forget to inc the size
 		iterator insert (iterator position, const value_type& val)
 		{
 			difference_type index = position - this->begin();
