@@ -6,7 +6,7 @@
 /*   By: thoberth <thoberth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/12 12:41:44 by thoberth          #+#    #+#             */
-/*   Updated: 2022/02/01 14:47:51 by thoberth         ###   ########.fr       */
+/*   Updated: 2022/02/04 17:31:08 by thoberth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define FT_UTILS_HPP
 
 #include <iostream>
+#include "bidirectional_iterator.hpp"
 
 namespace ft
 {
@@ -171,6 +172,36 @@ namespace ft
 	{
 		return pair<T1, T2>(x, y);
 	}
+
+	template <typename T1, typename T2>
+	struct node
+	{
+		node *parent;
+		node *left;
+		node *right;
+		int	color; // color == 0 if red , color == 1 if black
+		ft::pair<T1, T2> key_val;
+	};
+
+/* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
+**									RED BLACK TREE FUNC								   **
+** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
+
+	template <typename T1, typename T2>
+	ft::bidirectional_iterator<T1, T2>
+	ft::smaller_pair(ft::node<T1, T2> *root, ft::node<T1, T2> *sentinel)
+	{
+		ft::node *tmp = root;
+		while (root->left != sentinel)
+		{
+			tmp = root;
+			root = left;
+		}
+		return ft::bidirectional_iterator(tmp->key_val);
+	}
+
+
+
 }
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: thoberth <thoberth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/02 14:31:48 by thoberth          #+#    #+#             */
-/*   Updated: 2022/02/02 14:38:54 by thoberth         ###   ########.fr       */
+/*   Updated: 2022/02/04 17:15:57 by thoberth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,14 @@
 
 namespace ft
 {
-	template<typename T>
+	template<typename T1, typename T2>
 	class bidirectional_iterator
 	{
 		public :
 			typedef	std::ptrdiff_t					difference_type;
-			typedef	T								value_type;
-			typedef	T*								pointer;
-			typedef	T&								reference;
+			typedef	ft::pair<T1, T2>				value_type;
+			typedef	ft::pair<T1, T2>*				pointer;
+			typedef	ft::pair<T1, T2>&				reference;
 			typedef	ft::bidirectional_iterator_tag	iterator_category;
 
 			bidirectional_iterator() : _elem(0) {}
@@ -51,7 +51,7 @@ namespace ft
 
 			bidirectional_iterator& operator++()
 			{
-				this->_elem++; 
+				this->_elem++;
 				return *this; }
 
 			bidirectional_iterator operator++(int)
@@ -63,7 +63,7 @@ namespace ft
 
 			bidirectional_iterator& operator--()
 			{
-				this->_elem--; 
+				this->_elem--;
 				return *this; }
 
 			bidirectional_iterator operator--(int)

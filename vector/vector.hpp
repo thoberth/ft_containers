@@ -6,7 +6,7 @@
 /*   By: thoberth <thoberth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 15:27:34 by thoberth          #+#    #+#             */
-/*   Updated: 2022/01/31 20:09:07 by thoberth         ###   ########.fr       */
+/*   Updated: 2022/02/04 14:21:35 by thoberth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -413,6 +413,10 @@ namespace ft {
 			}
 		}
 
+/* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
+**									ALLOCATOR FUNC									   **
+** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
+
 		allocator_type get_allocator() const { return _alloc; }
 
 	private :
@@ -421,6 +425,10 @@ namespace ft {
 		size_type		_size;
 		size_type		_capacity;
 	};
+
+/* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
+**									NON MEMBER FUNC									   **
+** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
 
 	//use the equal algo
 	template <class T, class Alloc>

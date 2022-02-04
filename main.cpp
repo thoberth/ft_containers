@@ -6,24 +6,21 @@
 /*   By: thoberth <thoberth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/10 14:48:51 by thoberth          #+#    #+#             */
-/*   Updated: 2022/02/01 14:48:25 by thoberth         ###   ########.fr       */
+/*   Updated: 2022/02/04 15:43:46 by thoberth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <utility>	// std::pair
-#include <iostream> // std::cout
-#include "ft_utils.hpp"
+#include <iostream>     // std::cout
+#include <functional>   // std::less
+#include <algorithm>    // std::sort, std::includes
 
 int main()
 {
-	std::pair<int, int> foo;
-	std::pair<int, int> bar;
-
-	foo = std::make_pair(10, 20);
-	bar = std::make_pair(10.5, 'A'); // ok: implicit conversion from pair<double,char>
-
-	std::cout << "foo: " << foo.first << ", " << foo.second << '\n';
-	std::cout << "bar: " << bar.first << ", " << bar.second << '\n';
-
+	int foo[] = {10, 20, 5, 15, 25};
+	int bar[] = {15, 10, 20};
+	std::sort(foo, foo + 5, std::less<int>()); // 5 10 15 20 25
+	std::sort(bar, bar + 3, std::less<int>()); //   10 15 20
+	if (std::includes(foo, foo + 5, bar, bar + 3, std::less<int>()))
+		std::cout << "foo includes bar.\n";
 	return 0;
 }
