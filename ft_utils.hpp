@@ -6,15 +6,19 @@
 /*   By: thoberth <thoberth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/12 12:41:44 by thoberth          #+#    #+#             */
-/*   Updated: 2022/02/04 17:31:08 by thoberth         ###   ########.fr       */
+/*   Updated: 2022/02/05 14:50:14 by thoberth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_UTILS_HPP
 # define FT_UTILS_HPP
 
+# define RED 0
+# define BLACK 1
+
 #include <iostream>
 #include "bidirectional_iterator.hpp"
+
 
 namespace ft
 {
@@ -168,9 +172,9 @@ namespace ft
 	}
 
 	template <class T1, class T2>
-	pair<T1,T2> make_pair (T1 x, T2 y)
+	ft::pair<T1,T2> make_pair (T1 x, T2 y)
 	{
-		return pair<T1, T2>(x, y);
+		return ft::pair<T1, T2>(x, y);
 	}
 
 	template <typename T1, typename T2>
@@ -189,18 +193,60 @@ namespace ft
 
 	template <typename T1, typename T2>
 	ft::bidirectional_iterator<T1, T2>
-	ft::smaller_pair(ft::node<T1, T2> *root, ft::node<T1, T2> *sentinel)
+	smaller_pair(ft::node<T1, T2> *root, ft::node<T1, T2> *sentinel)
 	{
 		ft::node *tmp = root;
 		while (root->left != sentinel)
 		{
 			tmp = root;
-			root = left;
+			root = root->left;
 		}
 		return ft::bidirectional_iterator(tmp->key_val);
 	}
 
+	template <typename T1, typename T2>
+	ft::bidirectional_iterator<T1, T2>
+	greatest_pair(ft::node<T1, T2> *root, ft::node<T1, T2> *sentinel)
+	{
+		ft::node *tmp = root;
+		while (root->right != sentinel)
+		{
+			tmp = root;
+			root = root->right;
+		}
+		return ft::bidirectional_iterator(tmp->key_val);
+	}
 
+	template <typename T1, typename T2>
+	void
+	init_node(ft::node<T1, T2> *to_init, ft::node<T1, T2> *parent, ft::node<T1, T2> *left,
+		ft::node<T1, T2> *right, T1 key, T2 val, int color = RED)
+	{
+		to_init->key_val = ft::make_pair(key, val);
+		to_init->parent = parent;
+		to_init->left = left;
+		to_init->right = right;
+		to_init->color = color;
+	}
+
+	template <typename T1, typename T2>
+	void	destroy_tree(ft::node<T1, T2> *root, ft::node<T1, T2> *sentinel, size_t len, 
+		std::allocator<ft::pair<const T1, T2> > Alloc)
+	{
+		ft::node *to_destroy[len];
+		size_t child = 0 ;
+		size_t parent = 0;
+
+		while (child > parent)
+		{
+			if (root->left != sentinel)
+				to_destroy[child++] = root->left;
+			if (root->right != sentinel)
+				to_destroy[child++] = root->right;
+			Alloc.deallocate(root, 1);
+			root = to_destroy[parent++];
+		}
+	}
 
 }
 

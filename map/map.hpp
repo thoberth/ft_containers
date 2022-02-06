@@ -6,7 +6,7 @@
 /*   By: thoberth <thoberth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/01 14:04:18 by thoberth          #+#    #+#             */
-/*   Updated: 2022/02/04 17:14:08 by thoberth         ###   ########.fr       */
+/*   Updated: 2022/02/05 19:37:38 by thoberth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 #include "../ft_utils.hpp"
 #include "../reverse_iterator.hpp"
-// to do #include "../bidirectional_iterator.hpp"
+#include "../bidirectional_iterator.hpp"
 #include <map>
 
 namespace ft
@@ -62,32 +62,37 @@ namespace ft
 		private :
 			key_compare _comp;
 			Alloc _alloc;
+			size_type _size;
 			ft::node *_root;
 			ft::node *_sentinel;
 
 		public :
 			explicit map(const key_compare &comp = key_compare(),
 						const allocator_type &alloc = allocator_type())
-						: _comp(comp), _alloc(alloc)
-			{ this->_sentinel = _alloc.allocate(1); }
+						: _comp(comp), _alloc(alloc), _size(0)
+			{
+				this->_sentinel = _alloc.allocate(1);
+				ft::init_node(this->_sentinel, NULL, NULL, NULL, key_type(), mapped_type, BLACK);
+			}
 
 			template <class InputIterator>
 			map(InputIterator first, InputIterator last,
 				const key_compare &comp = key_compare(),
 				const allocator_type &alloc = allocator_type())
-				: _comp(comp), _alloc(alloc)
+				: _comp(comp), _alloc(alloc), _size(0)
 			{
 				this->_sentinel = _alloc.allocate(1);
+				ft::init_node(this->_sentinel, NULL, NULL, NULL, key_type(), mapped_type, BLACK);
 				this->insert(first, last);
 			}
 
-			map(const map &x) : _comp(x._comp), _alloc(x._alloc)
+			map(const map &x) : _comp(x._comp), _alloc(x._alloc), _size(x._size)
 			{ this = x; }
 
 			~map()
 			{
+				ft::destroy_tree(this->_root, this->_sentinel, this->_size, this->_alloc);
 				_alloc.deallocate(this->_sentinel, 1);
-				ft::destroy_tree(this->_root);
 			}
 
 			map& operator= (const map& x)
@@ -95,7 +100,7 @@ namespace ft
 				clear();
 				ft::node *tmp = this->_root;
 				this->_root = ft::copy_tree(x._root);
-				ft::destroy_tree(this->tmp);
+				ft::destroy_tree(this->tmp, this->_sentinel, this->_size, this->_alloc);
 				return *this;
 			}
 
@@ -103,7 +108,7 @@ namespace ft
 **									ITERATOR FUNC									   **
 ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
 
-			iterator begin() 
+			iterator begin()
 			{
 				return (ft::smaller_pair(this->_root, this->_sentinel));
 			}
@@ -115,47 +120,63 @@ namespace ft
 
 			iterator end()
 			{
-				return (this->_sentinel);
+				return (iterator(this->_sentinel.key_val));
 			}
 
 			const_iterator end() const
 			{
-				return (this->_sentinel);
+				return (iterator(this->_sentinel.key_val));
 			}
 
 			reverse_iterator rbegin()
 			{
-				
+				return reverse_iterator(this->end());
 			}
 
 			const_reverse_iterator rbegin() const
-			{}
+			{
+				return const_reverse_iterator(this->end());
+			}
 
 			reverse_iterator rend()
-			{}
+			{
+				return reverse_iterator(this->begin());
+			}
 
 			const_reverse_iterator rend() const
-			{}
+			{
+				return const_reverse_iterator(this->begin());
+			}
 
 /* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
 **									CAPACITY FUNC									   **
 ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
 
 			bool empty() const
-			{}
+			{
+				if (this->_size == 0)
+					return (true);
+				return (false);
+			}
 
 			size_type size() const
-			{}
+			{
+				return (this->_size);
+			}
 
 			size_type max_size() const
-			{}
+			{
+				return (this->_alloc.max_size());
+			}
 
 /* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
 **								ELEMENT ACCESS FUNC									   **
 ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
 
 			mapped_type& operator[] (const key_type& k)
-			{}
+			{
+				return *find(k);	/* uniquement si operator*() retourne mapped_type */
+			}
 
 /* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
 **									MODIFIERS FUNC									   **
