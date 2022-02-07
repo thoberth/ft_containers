@@ -6,7 +6,7 @@
 /*   By: thoberth <thoberth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/01 14:04:18 by thoberth          #+#    #+#             */
-/*   Updated: 2022/02/05 19:37:38 by thoberth         ###   ########.fr       */
+/*   Updated: 2022/02/07 19:09:47 by thoberth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include "../ft_utils.hpp"
 #include "../reverse_iterator.hpp"
 #include "../bidirectional_iterator.hpp"
+#include "../red_black_tree.hpp"
 #include <map>
 
 namespace ft
@@ -29,15 +30,15 @@ namespace ft
 		public :
 			typedef Key key_type;
 			typedef T mapped_type;
-			typedef pair<const key_type, mapped_type> value_type;
+			typedef ft::pair<const key_type, mapped_type> value_type;
 			typedef Compare key_compare;
 			typedef Alloc allocator_type;
 			typedef typename allocator_type::reference reference;
 			typedef typename allocator_type::const_reference const_reference;
 			typedef typename allocator_type::pointer pointer;
 			typedef typename allocator_type::const_pointer const_pointer;
-			typedef typename ft::bidirectional_iterator<ft::pair<key_type, mapped_type> > iterator;
-			typedef typename ft::bidirectional_iterator<const ft::pair<key_type, mapped_type> > const_iterator;
+			typedef typename ft::bidirectional_iterator<ft::node<key_type, mapped_type> > iterator;
+			typedef typename ft::bidirectional_iterator<const ft::node<key_type, mapped_type> > const_iterator;
 			typedef typename ft::reverse_iterator<iterator> reverse_iterator;
 			typedef typename ft::reverse_iterator<const iterator> const_reverse_iterator;
 			typedef typename ft::iterator_traits<iterator>::difference_type difference_type;
@@ -55,49 +56,38 @@ namespace ft
 
 					bool operator() (const value_type& x, const value_type& y) const
 					{
-						return comp(x.first, y.first);
+						return comp(x.first <  y.first);
 					}
 			};
 
 		private :
-			key_compare _comp;
+			value_compare _comp;
 			Alloc _alloc;
-			size_type _size;
-			ft::node *_root;
-			ft::node *_sentinel;
+			red_black_tree<value_type, Compare> _tree;
 
 		public :
 			explicit map(const key_compare &comp = key_compare(),
 						const allocator_type &alloc = allocator_type())
-						: _comp(comp), _alloc(alloc), _size(0)
-			{
-				this->_sentinel = _alloc.allocate(1);
-				ft::init_node(this->_sentinel, NULL, NULL, NULL, key_type(), mapped_type, BLACK);
-			}
+						: _comp(comp), _alloc(alloc), _tree()
+			{}
 
 			template <class InputIterator>
 			map(InputIterator first, InputIterator last,
 				const key_compare &comp = key_compare(),
 				const allocator_type &alloc = allocator_type())
-				: _comp(comp), _alloc(alloc), _size(0)
+				: _comp(comp), _alloc(alloc), _tree()
 			{
-				this->_sentinel = _alloc.allocate(1);
-				ft::init_node(this->_sentinel, NULL, NULL, NULL, key_type(), mapped_type, BLACK);
 				this->insert(first, last);
 			}
 
-			map(const map &x) : _comp(x._comp), _alloc(x._alloc), _size(x._size)
-			{ this = x; }
+			map(const map &x)
+			{ *this = x; }
 
 			~map()
-			{
-				ft::destroy_tree(this->_root, this->_sentinel, this->_size, this->_alloc);
-				_alloc.deallocate(this->_sentinel, 1);
-			}
+			{}
 
 			map& operator= (const map& x)
 			{
-				clear();
 				ft::node *tmp = this->_root;
 				this->_root = ft::copy_tree(x._root);
 				ft::destroy_tree(this->tmp, this->_sentinel, this->_size, this->_alloc);
@@ -205,7 +195,10 @@ namespace ft
 			{}
 
 			void clear()
-			{}
+			{
+				ft::destroy_tree(this->root, this->_sentinel, this->_size, this->_alloc);
+				_size = 0;
+			}
 
 /* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
 **									OBSERVERS FUNC									   **
