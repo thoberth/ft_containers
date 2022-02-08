@@ -6,7 +6,7 @@
 /*   By: thoberth <thoberth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/01 14:04:18 by thoberth          #+#    #+#             */
-/*   Updated: 2022/02/07 19:09:47 by thoberth         ###   ########.fr       */
+/*   Updated: 2022/02/08 17:14:49 by thoberth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,10 @@ namespace ft
 
 			class value_compare : public std::binary_function<value_type, value_type, bool>
 			{
+				friend class ft::map;
 				protected :
-					key_compare comp;
-					value_compare(Compare c) : comp(c) {} // constructed with map's comparison object
+					Compare _comp;
+					value_compare(Compare c) : _comp(c) {} // constructed with map's comparison object
 				public :
 					typedef bool	result_type;
 					typedef value_type	first_argument_type;
@@ -56,14 +57,14 @@ namespace ft
 
 					bool operator() (const value_type& x, const value_type& y) const
 					{
-						return comp(x.first <  y.first);
+						return _comp(x.first , y.first);
 					}
 			};
 
 		private :
 			value_compare _comp;
 			Alloc _alloc;
-			red_black_tree<value_type, Compare> _tree;
+			red_black_tree<value_type, key_type> _tree;
 
 		public :
 			explicit map(const key_compare &comp = key_compare(),

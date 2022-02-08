@@ -6,7 +6,7 @@
 /*   By: thoberth <thoberth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/12 12:41:44 by thoberth          #+#    #+#             */
-/*   Updated: 2022/02/07 17:01:48 by thoberth         ###   ########.fr       */
+/*   Updated: 2022/02/08 12:41:22 by thoberth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 # define BLACK 1
 
 #include <iostream>
-#include "bidirectional_iterator.hpp"
 
 
 namespace ft
@@ -177,14 +176,14 @@ namespace ft
 		return ft::pair<T1, T2>(x, y);
 	}
 
-	template <class T>
+	template <class value_type>
 	struct node
 	{
 		node *parent;	/*	The node parent */
 		node *left;		/*	The node strictly inferior */
-		node *right;	/* The node superior or equal */
+		node *right;	/* The node superior (or equal but not for map) */
 		int	color;		/* color == 0 if red , color == 1 if black */
-		T	key_val;
+		value_type	key_val;
 	};
 
 /* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
