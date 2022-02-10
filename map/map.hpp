@@ -6,7 +6,7 @@
 /*   By: thoberth <thoberth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/01 14:04:18 by thoberth          #+#    #+#             */
-/*   Updated: 2022/02/08 17:14:49 by thoberth         ###   ########.fr       */
+/*   Updated: 2022/02/10 23:17:33 by thoberth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,12 +101,12 @@ namespace ft
 
 			iterator begin()
 			{
-				return (ft::smaller_pair(this->_root, this->_sentinel));
+				return ();
 			}
 
 			const_iterator begin() const
 			{
-				return (ft::smaller_pair(this->root, this->_sentinel));
+				return ();
 			}
 
 			iterator end()
@@ -145,14 +145,14 @@ namespace ft
 
 			bool empty() const
 			{
-				if (this->_size == 0)
+				if (this->_tree.size() == 0)
 					return (true);
 				return (false);
 			}
 
 			size_type size() const
 			{
-				return (this->_size);
+				return (this->_tree.size());
 			}
 
 			size_type max_size() const
@@ -181,24 +181,37 @@ namespace ft
 
 			template <class InputIterator>
 			void insert(InputIterator first, InputIterator last)
-			{}
+			{
+				while (first != last)
+				{
+					this->_tree.insert(first);
+				}
+			}
 
 			void erase(iterator position)
-			{}
+			{
+				this->_tree.erase(position);
+			}
 
 			size_type erase(const key_type &k)
-			{}
+			{
+				this->_tree.erase(k);
+			}
 
 			void erase(iterator first, iterator last)
-			{}
+			{
+				while (first != last)
+				{
+					this->_tree.erase(first);
+				}
+			}
 
 			void swap (map& x)
 			{}
 
 			void clear()
 			{
-				ft::destroy_tree(this->root, this->_sentinel, this->_size, this->_alloc);
-				_size = 0;
+				this->_tree.destroy_tree();
 			}
 
 /* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
@@ -216,10 +229,26 @@ namespace ft
 ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
 
 			iterator find (const key_type& k)
-			{}
+			{
+				iterator it = this->begin();
+				while (it != this->end() || it->first != k)
+				{
+					it++;
+				}
+				if (it->first == k)
+					return (it);
+			}
 
 			const_iterator find(const key_type &k) const
-			{}
+			{
+				const_iterator it = this->begin();
+				while (it != this->end() || it->first != k)
+				{
+					it++;
+				}
+				if (it->first == k)
+					return (it);
+			}
 
 			size_type count(const key_type &k) const
 			{}

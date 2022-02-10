@@ -6,7 +6,7 @@
 /*   By: thoberth <thoberth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/10 14:48:51 by thoberth          #+#    #+#             */
-/*   Updated: 2022/02/08 18:36:13 by thoberth         ###   ########.fr       */
+/*   Updated: 2022/02/10 18:22:29 by thoberth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,34 @@
 #include <map>
 #include "red_black_tree.hpp"
 
+// void change_ptr(int *ptr)
+// {
+// 	int i = 2;
+// 	int *p = &i;
+// 	*ptr = *p;
+// }
+
 int main()
 {
 	typedef ft::pair<int, int> value_type;
 	red_black_tree<value_type, int> rbt;
 
-	rbt.insert(ft::make_pair(1, 2));
-	rbt.insert(ft::make_pair(2, 3));
-	rbt.insert(ft::make_pair(3, 4));
 	rbt.insert(ft::make_pair(0, 0));
+	rbt.insert(ft::make_pair(1, 0));
+	rbt.insert(ft::make_pair(2, 0));
+	rbt.insert(ft::make_pair(3, 0));
+	rbt.insert(ft::make_pair(4, 0));
+	rbt.insert(ft::make_pair(5, 0));
 	rbt.put_tree();
+	
+
+	// int i = 12;
+	// int *p = &i;
+	// int *ptr = p;
+
+	// std::cout << *ptr << '\n';
+	// change_ptr(ptr);
+	// std::cout << *ptr << '\n';
 	return 0;
 }
 
