@@ -6,7 +6,7 @@
 /*   By: thoberth <thoberth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/01 14:04:18 by thoberth          #+#    #+#             */
-/*   Updated: 2022/02/10 23:17:33 by thoberth         ###   ########.fr       */
+/*   Updated: 2022/02/11 17:17:59 by thoberth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@ namespace ft
 			typedef typename allocator_type::const_reference const_reference;
 			typedef typename allocator_type::pointer pointer;
 			typedef typename allocator_type::const_pointer const_pointer;
-			typedef typename ft::bidirectional_iterator<ft::node<key_type, mapped_type> > iterator;
-			typedef typename ft::bidirectional_iterator<const ft::node<key_type, mapped_type> > const_iterator;
+			typedef typename ft::bidirectional_iterator<ft::node<value_type> > iterator;
+			typedef typename ft::bidirectional_iterator<const ft::node<value_type> > const_iterator;
 			typedef typename ft::reverse_iterator<iterator> reverse_iterator;
 			typedef typename ft::reverse_iterator<const iterator> const_reverse_iterator;
 			typedef typename ft::iterator_traits<iterator>::difference_type difference_type;
@@ -46,7 +46,7 @@ namespace ft
 
 			class value_compare : public std::binary_function<value_type, value_type, bool>
 			{
-				friend class ft::map;
+				friend class map;
 				protected :
 					Compare _comp;
 					value_compare(Compare c) : _comp(c) {} // constructed with map's comparison object
@@ -101,22 +101,22 @@ namespace ft
 
 			iterator begin()
 			{
-				return ();
+				return (this->_tree->minimum(this->_tree->root())->key_val);
 			}
 
 			const_iterator begin() const
 			{
-				return ();
+				return (this->_tree->minimum(this->_tree->root())->key_val);
 			}
 
 			iterator end()
 			{
-				return (iterator(this->_sentinel.key_val));
+				return (iterator(this->_tree->sentinel().key_val));
 			}
 
 			const_iterator end() const
 			{
-				return (iterator(this->_sentinel.key_val));
+				return (iterator(this->_tree->sentinel().key_val));
 			}
 
 			reverse_iterator rbegin()

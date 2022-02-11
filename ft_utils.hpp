@@ -6,7 +6,7 @@
 /*   By: thoberth <thoberth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/12 12:41:44 by thoberth          #+#    #+#             */
-/*   Updated: 2022/02/08 12:41:22 by thoberth         ###   ########.fr       */
+/*   Updated: 2022/02/11 17:06:05 by thoberth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,44 +185,6 @@ namespace ft
 		int	color;		/* color == 0 if red , color == 1 if black */
 		value_type	key_val;
 	};
-
-/* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
-**									RED BLACK TREE FUNC								   **
-** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
-
-	// template <typename T1, typename T2>
-	// ft::bidirectional_iterator<T1, T2>
-	// smaller_pair(ft::node<T1, T2> *root, ft::node<T1, T2> *sentinel)
-	// {
-	// 	ft::node *tmp = root;
-	// 	while (root->left != sentinel)
-	// 	{
-	// 		tmp = root;
-	// 		root = root->left;
-	// 	}
-	// 	return ft::bidirectional_iterator(tmp->key_val);
-	// }
-
-	// template <typename T1, typename T2>
-	// ft::bidirectional_iterator<T1, T2>
-	// greatest_pair(ft::node<T1, T2> *root, ft::node<T1, T2> *sentinel)
-	// {
-	// 	ft::node *tmp = root;
-	// 	while (root->right != sentinel)
-	// 	{
-	// 		tmp = root;
-	// 		root = root->right;
-	// 	}
-	// 	return ft::bidirectional_iterator(tmp->key_val);
-	// }
-
-
-	// template <typename T1, typename T2>
-	// ft::node<T1, T2> increase(ft::node<T1, T2> current)
-	// {
-	// 	if (current.parent == NULL && current.)
-	// }
-
 }
 
 #endif

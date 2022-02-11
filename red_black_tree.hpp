@@ -6,7 +6,7 @@
 /*   By: thoberth <thoberth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/07 16:08:20 by thoberth          #+#    #+#             */
-/*   Updated: 2022/02/10 18:23:01 by thoberth         ###   ########.fr       */
+/*   Updated: 2022/02/11 17:04:50 by thoberth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,20 @@ class red_black_tree
 			}
 		}
 
+		ft::node<value_type>* minimum(ft::node<value_type> *node)
+		{
+			while (node->left != this->_sentinel)
+				node = node->left;
+			return node;
+		}
+
+		ft::node<value_type>* maximum(ft::node<value_type> *node)
+		{
+			while (node->right != this->_sentinel)
+				node = node->right;
+			return node;
+		}
+
 		/*
 		**	x = old parent && y = new parent
 		*/
@@ -120,9 +134,6 @@ class red_black_tree
 			y->left = x;
 		}
 
-		/*
-		**
-		*/
 		void right_rotate(ft::node<value_type> *new_p, ft::node<value_type> *old_p)
 		{
 			if (old_p->parent == this->_sentinel)
@@ -164,8 +175,6 @@ class red_black_tree
 
 		/*
 		** Try to insert in the tree.
-		** return 1 if node insert or if key is equal to an other
-		** return 0 if node is not insert, call insertnode() function in insert() function
 		*/
 		void insert2(const value_type& ins, ft::node<value_type> *to_move, ft::node<value_type> *to_ins)
 		{
@@ -260,7 +269,144 @@ class red_black_tree
 			this->_root->color = BLACK;
 		}
 
-		void	put_tree(ft::node<value_type> *to_aff[] = NULL, size_t nbr_tab = 50, size_t size_tab = 1)
+		void	erase(ft::node<value_type> *z)
+		{
+			if (this->_size == 0)
+			{
+				std::cout << "rb tree size = 0" << std::endl;
+				return ;
+			}
+			int color = z->color;
+			ft::node<value_type> *y = z;
+			ft::node<value_type> *x;
+			if (z->left == this->_sentinel) /*  1 child case  */
+			{
+				x = z->right;
+				transplant(z, z->right);
+			}
+			else if (z->right == this->_sentinel) /*  1 child case  */
+			{
+				x = z->left;
+				transplant(z, z->left);
+			}
+			else  /*  2 child specific case  */
+			{
+				y = minimum(z->right);
+				color = y->color;
+				x = y->right;
+				if (y->parent == z) /* if z->right == y */
+				{
+					x->parent = y;
+				}
+				else
+				{
+					transplant(y, y->right);
+					y->right = z->right;
+					y->right->parent = y;
+				}
+
+				transplant(z, y);
+				y->left = z->left;
+				y->left->parent = y;
+				y->color = z->color;
+			}
+			this->_alloc.deallocate(z, 1);
+			this->_size--;
+			if (color == BLACK)
+				rb_tree_post_erase(x);
+		}
+
+		void	rb_tree_post_erase(ft::node<value_type> *x)
+		{
+			ft::node<value_type> *s; /* the sibling of x */
+			while (x != this->_root && x->color == BLACK)
+			{
+				if (x == x->parent->left)
+				{
+					s = x->parent->right;
+					if (s->color == RED)
+					{
+						s->color = BLACK;
+						x->parent->color = RED;
+						left_rotate(x->parent, x);
+						s = x->parent->right;
+					}
+					if (s->left->color == BLACK && s->right->color == BLACK)
+					{
+						s->color = RED;
+						x = x->parent;
+					}
+					else
+					{
+						if (s->right->color == BLACK)
+						{
+							s->left->color = BLACK;
+							s->color = RED;
+							right_rotate(s->left, s);
+							s = x->parent->right;
+						}
+						s->color = x->parent->color;
+						x->parent->color = BLACK;
+						s->right->color = BLACK;
+						left_rotate(x->parent, x);
+						x = this->_root;
+					}
+				}
+				else
+				{
+					s = x->parent->left;
+					if (s->color == RED)
+					{
+						s->color = BLACK;
+						x->parent->color = RED;
+						right_rotate(x->parent->left, x->parent);
+						s = x->parent->left;
+					}
+					if (s->right->color == BLACK && s->left->color == BLACK)
+					{
+						s->color = RED;
+						x = x->parent;
+					}
+					else
+					{
+						if (s->left->color == BLACK)
+						{
+							s->right->color = BLACK;
+							s->color = RED;
+							left_rotate(s, s->parent);
+							s = x->parent->left;
+						}
+
+						s->color = x->parent->color;
+						x->parent->color = BLACK;
+						s->left->color = BLACK;
+						right_rotate(x->parent->left, x->parent);
+						x = this->_root;
+					}
+				}
+			}
+			x->color = BLACK;
+		}
+
+		/*
+		**	v become u
+		*/
+		void transplant(ft::node<value_type> *u, ft::node<value_type> *v)
+		{
+			if (u->parent == this->_sentinel)
+				this->_root = v;
+			else if (u  == u->parent->left)
+				u->parent->left = v;
+			else
+				u->parent->right = v;
+			v->parent = u->parent;
+		}
+
+		/*
+		**	Function to show the tree
+		*/
+		void	put_tree(ft::node<value_type> *to_aff[] = NULL,
+			size_t nbr_tab = 50, size_t size_tab = 1)
 		{
 			if (this->_size == 0)
 			{
@@ -335,7 +481,20 @@ class red_black_tree
 			}
 		}
 
-		size_t size() const { return this->_size; }
+		size_t size() const
+		{
+			return this->_size;
+		}
+
+		ft::node<value_type> *root() const
+		{
+			return this->_root;
+		}
+
+		ft::node<value_type> *sentinel() const
+		{
+			return this->_sentinel;
+		}
 };
 
 #endif

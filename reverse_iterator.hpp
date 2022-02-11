@@ -6,11 +6,12 @@
 /*   By: thoberth <thoberth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/29 16:06:33 by thoberth          #+#    #+#             */
-/*   Updated: 2022/01/31 23:46:03 by thoberth         ###   ########.fr       */
+/*   Updated: 2022/02/11 17:17:07 by thoberth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "iterator_traits.hpp"
+#include "iterator.hpp"
 
 namespace ft
 {

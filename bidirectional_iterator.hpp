@@ -6,7 +6,7 @@
 /*   By: thoberth <thoberth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/02 14:31:48 by thoberth          #+#    #+#             */
-/*   Updated: 2022/02/07 14:56:01 by thoberth         ###   ########.fr       */
+/*   Updated: 2022/02/11 17:21:38 by thoberth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,17 +21,17 @@
 
 namespace ft
 {
-	template<typename T1, typename T2>
+	template<typename T1>
 	class bidirectional_iterator
 	{
 		public :
-			typedef	std::ptrdiff_t					difference_type;
-			typedef	ft::node<T1, T2>				value_type;
-			typedef	ft::node<T1, T2>::key_val*				pointer;
-			typedef	ft::node<T1, T2>::key_val&				reference;
-			typedef	ft::bidirectional_iterator_tag	iterator_category;
+			typedef	std::ptrdiff_t							difference_type;
+			typedef	ft::node<T1>							value_type;
+			typedef	typename ft::node<T1>*			pointer;
+			typedef	typename ft::node<T1>&			reference;
+			typedef	ft::bidirectional_iterator_tag			iterator_category;
 
-			bidirectional_iterator() : _elem(0) {}
+			bidirectional_iterator() : _elem() {}
 
 			bidirectional_iterator(bidirectional_iterator const & src) : _elem(src._elem)
 			{ }
@@ -81,7 +81,7 @@ namespace ft
 			}
 
 		private :
-			value_type	_elem;
+			pointer	_elem;
 	};
 }
 
