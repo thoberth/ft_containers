@@ -6,7 +6,7 @@
 /*   By: thoberth <thoberth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/01 14:04:18 by thoberth          #+#    #+#             */
-/*   Updated: 2022/02/11 17:17:59 by thoberth         ###   ########.fr       */
+/*   Updated: 2022/02/12 13:07:29 by thoberth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,9 +89,9 @@ namespace ft
 
 			map& operator= (const map& x)
 			{
-				ft::node *tmp = this->_root;
-				this->_root = ft::copy_tree(x._root);
-				ft::destroy_tree(this->tmp, this->_sentinel, this->_size, this->_alloc);
+				red_black_tree<value_type, key_type> tmp = this->_tree;
+				this->_tree = x._tree;
+				tmp.destroy_tree();
 				return *this;
 			}
 
@@ -101,22 +101,22 @@ namespace ft
 
 			iterator begin()
 			{
-				return (this->_tree->minimum(this->_tree->root())->key_val);
+				return iterator(this->_tree.minimum(this->_tree.root()));
 			}
 
 			const_iterator begin() const
 			{
-				return (this->_tree->minimum(this->_tree->root())->key_val);
+				return iterator(this->_tree.minimum(this->_tree->root()));
 			}
 
 			iterator end()
 			{
-				return (iterator(this->_tree->sentinel().key_val));
+				return (iterator(this->_tree.sentinel()));
 			}
 
 			const_iterator end() const
 			{
-				return (iterator(this->_tree->sentinel().key_val));
+				return (iterator(this->_tree.sentinel()));
 			}
 
 			reverse_iterator rbegin()
@@ -166,7 +166,7 @@ namespace ft
 
 			mapped_type& operator[] (const key_type& k)
 			{
-				return *find(k);	/* uniquement si operator*() retourne mapped_type */
+				return *(find(k)).first;
 			}
 
 /* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **

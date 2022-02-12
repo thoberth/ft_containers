@@ -6,7 +6,7 @@
 /*   By: thoberth <thoberth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/07 16:08:20 by thoberth          #+#    #+#             */
-/*   Updated: 2022/02/11 17:04:50 by thoberth         ###   ########.fr       */
+/*   Updated: 2022/02/12 11:12:53 by thoberth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,28 @@ class red_black_tree
 		{
 			while (node->right != this->_sentinel)
 				node = node->right;
+			return node;
+		}
+
+		ft::node<value_type>* found_next_one(ft::node<value_type> *node)
+		{
+			if (node == maximum(this->_root))
+				return this->_sentinel;
+			if (node->right != this->_sentinel)
+				return (minimum(node->right));
+			while (node != node->parent->left)
+				node != node->parent;
+			return node;
+		}
+
+		ft::node<value_type>* found_prec(ft::node<value_type> *node)
+		{
+			if (node == minimum(this->_root))
+				return this->_sentinel;
+			if (node->left != this->_sentinel)
+				return (maximum(node->left));
+			while (node != node->parent->right)
+				node != node->parent;
 			return node;
 		}
 
