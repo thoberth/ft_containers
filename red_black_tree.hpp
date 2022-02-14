@@ -6,7 +6,7 @@
 /*   By: thoberth <thoberth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/07 16:08:20 by thoberth          #+#    #+#             */
-/*   Updated: 2022/02/12 11:12:53 by thoberth         ###   ########.fr       */
+/*   Updated: 2022/02/14 17:09:11 by thoberth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,19 +53,23 @@ class red_black_tree
 					: _comp(comp), _alloc(alloc), _size(0)
 		{
 			this->_sentinel = this->_alloc.allocate(1);
-			this->_sentinel = this->init_node(this->_sentinel, NULL, NULL, NULL, ft::make_pair(0,0), BLACK);
+			this->_sentinel->parent = NULL;
+			this->_sentinel->left = NULL;
+			this->_sentinel->right = NULL;
 		}
 
-		~red_black_tree()
+		virtual ~red_black_tree()
 		{
 			this->destroy_tree();
+			this->_alloc.deallocate(this->_sentinel, 1);
 		}
 
 		ft::node<value_type>*
 		init_node(ft::node<value_type> *to_init, ft::node<value_type> *parent, ft::node<value_type> *left,
-				  ft::node<value_type> *right, value_type key_val, int color = RED)
+				  ft::node<value_type> *right, const value_type &val, int color = RED)
 		{
-			to_init->key_val = key_val;
+			to_init = this->_alloc.allocate(1);
+			this->_alloc.construct(to_init, val);
 			to_init->parent = parent;
 			to_init->left = left;
 			to_init->right = right;
@@ -96,14 +100,14 @@ class red_black_tree
 			}
 		}
 
-		ft::node<value_type>* minimum(ft::node<value_type> *node)
+		ft::node<value_type>* minimum(ft::node<value_type> *node) const
 		{
 			while (node->left != this->_sentinel)
 				node = node->left;
 			return node;
 		}
 
-		ft::node<value_type>* maximum(ft::node<value_type> *node)
+		ft::node<value_type>* maximum(ft::node<value_type> *node) const
 		{
 			while (node->right != this->_sentinel)
 				node = node->right;
@@ -117,7 +121,7 @@ class red_black_tree
 			if (node->right != this->_sentinel)
 				return (minimum(node->right));
 			while (node != node->parent->left)
-				node != node->parent;
+				node = node->parent;
 			return node;
 		}
 
@@ -128,7 +132,7 @@ class red_black_tree
 			if (node->left != this->_sentinel)
 				return (maximum(node->left));
 			while (node != node->parent->right)
-				node != node->parent;
+				node = node->parent;
 			return node;
 		}
 
@@ -180,14 +184,13 @@ class red_black_tree
 		void insert(const value_type& ins)
 		{
 			ft::node<value_type> *to_move = this->_root;
-			ft::node<value_type> *to_ins = this->_alloc.allocate(1);
-			if (_size == 0)
+			ft::node<value_type> *to_ins = NULL;
+			if (this->_size == 0)
 			{
 				to_ins = this->init_node(to_ins, this->_sentinel, this->_sentinel,
 					this->_sentinel, ins, BLACK);
 				this->_root = to_ins;
 				this->_size++;
-				
 			}
 			else
 			{
@@ -218,7 +221,7 @@ class red_black_tree
 			}
 			else if (!(this->_comp(ins, to_move->key_val)) &&
 					 !(this->_comp(to_move->key_val, ins))) /* if equal the new insert is ignored */
-				this->_alloc.deallocate(to_ins, 1);
+				return ;
 			else
 			{
 				if (to_move->right == this->_sentinel)

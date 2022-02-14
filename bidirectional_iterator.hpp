@@ -6,7 +6,7 @@
 /*   By: thoberth <thoberth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/02 14:31:48 by thoberth          #+#    #+#             */
-/*   Updated: 2022/02/12 12:56:51 by thoberth         ###   ########.fr       */
+/*   Updated: 2022/02/14 17:48:30 by thoberth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ namespace ft
 				_root(src._root), _senti(src._senti)
 			{ }
 
-			bidirectional_iterator(value_type elem) : _elem(elem)
+			bidirectional_iterator(pointer elem) : _elem(elem)
 			{
 				pointer tmp = this->_elem;
 				if (tmp->parent == NULL)
@@ -63,11 +63,17 @@ namespace ft
 				return *this;
 			}
 
-			reference operator*()
-			{ return this->_elem.key_val; }
+			T1& operator*()
+			{ return (this->_elem->key_val); }
 
-			pointer	operator->()
-			{ return &this->operator*(); }
+			const T1& operator*() const
+			{ return (this->_elem->key_val); }
+
+			T1	*operator->()
+			{ return (&this->operator*()); }
+
+			const T1	*operator->() const
+			{ return (&this->operator*()); }
 
 			bidirectional_iterator& operator++()
 			{
@@ -93,6 +99,8 @@ namespace ft
 				return (rtn);
 			}
 
+			pointer	base() const { return this->_elem; }
+
 			operator bidirectional_iterator<const value_type>() const
 			{
 				return bidirectional_iterator<const value_type>(this->_elem);
@@ -103,42 +111,60 @@ namespace ft
 			pointer _root;
 			pointer _senti;
 
-			ft::node<value_type> *found_next_one(ft::node<value_type> *node)
+			pointer _found_next_one(pointer node)
 			{
-				if (node == maximum(this->_root))
-					return this->_sentinel;
+				if (node == _maximum(this->_root))
+					return this->_senti;
 				if (node->right != this->_senti)
-					return (minimum(node->right));
+					return (_minimum(node->right));
 				while (node != node->parent->left)
-					node != node->parent;
+					node = node->parent;
 				return node;
 			}
 
-			ft::node<value_type> *found_prec(ft::node<value_type> *node)
+			pointer _found_prec(pointer node)
 			{
-				if (node == minimum(this->_root))
-					return this->_sentinel;
+				if (node == _minimum(this->_root))
+					return this->_senti;
 				if (node->left != this->_senti)
-					return (maximum(node->left));
+					return (_maximum(node->left));
 				while (node != node->parent->right)
-					node != node->parent;
+					node = node->parent;
 				return node;
 			}
 
-			ft::node<value_type> *minimum(ft::node<value_type> *node)
+			pointer _minimum(pointer node)
 			{
 				while (node->left != this->_senti)
 					node = node->left;
 				return node;
 			}
 
-			ft::node<value_type> *maximum(ft::node<value_type> *node)
+			pointer _maximum(pointer node)
 			{
 				while (node->right != this->_senti)
 					node = node->right;
 				return node;
 			}
 	};
+
+	template<typename T, typename X>
+	bool operator==(const bidirectional_iterator<T> & A,
+		const bidirectional_iterator<X> & B)
+	{
+		if (A.base() == B.base())
+			return (true);
+		return (false);
+	}
+
+	template<typename T, typename X>
+	bool operator!=(const bidirectional_iterator<T> & A,
+		const bidirectional_iterator<X> & B)
+	{
+		if (A.base() != B.base())
+			return (true);
+		return (false);
+	}
 }
 
 #endif

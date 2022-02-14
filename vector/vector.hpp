@@ -6,7 +6,7 @@
 /*   By: thoberth <thoberth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 15:27:34 by thoberth          #+#    #+#             */
-/*   Updated: 2022/02/04 14:21:35 by thoberth         ###   ########.fr       */
+/*   Updated: 2022/02/14 13:56:34 by thoberth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ namespace ft {
 	public :
 		typedef T												value_type;
 		typedef	Alloc											allocator_type;
-		typedef	T&				reference;
+		typedef	T&												reference;
 		typedef	typename allocator_type::const_reference		const_reference;
 		typedef	typename allocator_type::pointer				pointer;
 		typedef	typename allocator_type::const_pointer			const_pointer;

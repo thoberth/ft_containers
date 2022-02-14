@@ -6,7 +6,7 @@
 /*   By: thoberth <thoberth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/12 12:41:44 by thoberth          #+#    #+#             */
-/*   Updated: 2022/02/11 17:06:05 by thoberth         ###   ########.fr       */
+/*   Updated: 2022/02/14 17:02:56 by thoberth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,23 +121,34 @@ namespace ft
 
 		pair() : first(first_type()), second(second_type()) {}
 
+		pair (const first_type& a, const second_type& b) : first(a), second(b) {}
+
 		template<class U, class V>
 		pair (const pair<U,V>& pr) : first(pr.first), second(pr.second) {}
 
-		pair (const first_type& a, const second_type& b) : first(a), second(b) {}
+		virtual ~pair() {}
 
-		pair& operator= (const pair& pr)
+		template<class U, class V>
+		pair<T1, T2>& operator= (const pair<U, V>& pr)
 		{
-			first = pr.first;
-			second = pr.second;
+			if (this != &pr)
+			{
+				first = pr.first;
+				second = pr.second;
+			}
 			return *this;
+		}
+
+		operator pair<const T1, const T2>(void) const
+		{
+			return (pair<const T1, const T2>(this->first, this->second));
 		}
 	};
 
 	template <class T1, class T2>
 	bool operator==(const pair<T1, T2> &lhs, const pair<T1, T2> &rhs)
 	{
-		return lhs.first == rhs.first && lhs.second == rhs.second;
+		return (lhs.first == rhs.first && lhs.second == rhs.second);
 	}
 
 	template <class T1, class T2>
@@ -179,6 +190,9 @@ namespace ft
 	template <class value_type>
 	struct node
 	{
+
+		node(const value_type &kv) : key_val(kv) {}
+
 		node *parent;	/*	The node parent */
 		node *left;		/*	The node strictly inferior */
 		node *right;	/* The node superior (or equal but not for map) */

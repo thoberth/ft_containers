@@ -6,7 +6,7 @@
 /*   By: thoberth <thoberth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 16:41:39 by thoberth          #+#    #+#             */
-/*   Updated: 2022/01/29 16:54:05 by thoberth         ###   ########.fr       */
+/*   Updated: 2022/02/14 13:54:30 by thoberth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ namespace ft
 	/*	Specialization Type T* not const */
 
 	template <typename T>
-	class iterator_traits<T *>
+	class iterator_traits<T*>
 	{
 	public:
 		typedef std::ptrdiff_t difference_type;
@@ -47,7 +47,7 @@ namespace ft
 	/*	Specialization Type T* const */
 
 	template <typename T>
-	class iterator_traits<const T *>
+	class iterator_traits<const T*>
 	{
 	public:
 		typedef std::ptrdiff_t difference_type;

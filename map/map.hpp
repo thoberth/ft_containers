@@ -6,7 +6,7 @@
 /*   By: thoberth <thoberth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/01 14:04:18 by thoberth          #+#    #+#             */
-/*   Updated: 2022/02/12 13:07:29 by thoberth         ###   ########.fr       */
+/*   Updated: 2022/02/14 17:36:47 by thoberth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@ namespace ft
 			typedef typename allocator_type::const_reference const_reference;
 			typedef typename allocator_type::pointer pointer;
 			typedef typename allocator_type::const_pointer const_pointer;
-			typedef typename ft::bidirectional_iterator<ft::node<value_type> > iterator;
-			typedef typename ft::bidirectional_iterator<const ft::node<value_type> > const_iterator;
+			typedef typename ft::bidirectional_iterator<value_type > iterator;
+			typedef typename ft::bidirectional_iterator<const value_type > const_iterator;
 			typedef typename ft::reverse_iterator<iterator> reverse_iterator;
 			typedef typename ft::reverse_iterator<const iterator> const_reverse_iterator;
 			typedef typename ft::iterator_traits<iterator>::difference_type difference_type;
@@ -62,21 +62,24 @@ namespace ft
 			};
 
 		private :
-			value_compare _comp;
+			key_compare _comp;
 			Alloc _alloc;
 			red_black_tree<value_type, key_type> _tree;
 
 		public :
-			explicit map(const key_compare &comp = key_compare(),
+
+			map() : _comp(key_compare()), _alloc(allocator_type()) {}
+
+			explicit map(const key_compare &comp,
 						const allocator_type &alloc = allocator_type())
-						: _comp(comp), _alloc(alloc), _tree()
+						: _comp(comp), _alloc(alloc)
 			{}
 
 			template <class InputIterator>
 			map(InputIterator first, InputIterator last,
 				const key_compare &comp = key_compare(),
 				const allocator_type &alloc = allocator_type())
-				: _comp(comp), _alloc(alloc), _tree()
+				: _comp(comp), _alloc(alloc)
 			{
 				this->insert(first, last);
 			}
@@ -106,7 +109,7 @@ namespace ft
 
 			const_iterator begin() const
 			{
-				return iterator(this->_tree.minimum(this->_tree->root()));
+				return const_iterator(this->_tree.minimum(this->_tree.root()));
 			}
 
 			iterator end()
@@ -116,7 +119,7 @@ namespace ft
 
 			const_iterator end() const
 			{
-				return (iterator(this->_tree.sentinel()));
+				return (const_iterator(this->_tree.sentinel()));
 			}
 
 			reverse_iterator rbegin()
@@ -174,23 +177,37 @@ namespace ft
 ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
 
 			pair<iterator, bool> insert(const value_type &val)
-			{}
+			{
+				ft::pair<iterator, bool> to_ret;
+				size_type t_tmp = this->_tree.size();
+				_tree.insert(val);
+				if (this->_tree.size() != t_tmp)
+					to_ret.second = true;
+				else
+					to_ret.second = false;
+				to_ret.first = find(val.first);
+				return (to_ret);
+			}
 
 			iterator insert(iterator position, const value_type &val)
-			{}
+			{
+				insert(val);
+				position = find(val.first);
+				return (position);
+			}
 
 			template <class InputIterator>
 			void insert(InputIterator first, InputIterator last)
 			{
 				while (first != last)
 				{
-					this->_tree.insert(first);
+					this->_tree.insert(first++);
 				}
 			}
 
 			void erase(iterator position)
 			{
-				this->_tree.erase(position);
+				this->_tree.erase(position.base());
 			}
 
 			size_type erase(const key_type &k)
@@ -202,12 +219,12 @@ namespace ft
 			{
 				while (first != last)
 				{
-					this->_tree.erase(first);
+					this->_tree.erase(first.base());
 				}
 			}
 
-			void swap (map& x)
-			{}
+			// void swap (map& x)
+			// {}
 
 			void clear()
 			{
@@ -218,11 +235,11 @@ namespace ft
 **									OBSERVERS FUNC									   **
 ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
 
-			key_compare key_comp() const
-			{}
+			// key_compare key_comp() const
+			// {}
 
-			value_compare value_comp() const
-			{}
+			// value_compare value_comp() const
+			// {}
 
 /* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
 **									OPERATIONS FUNC									   **
@@ -237,6 +254,7 @@ namespace ft
 				}
 				if (it->first == k)
 					return (it);
+				return this->_tree.sentinel();
 			}
 
 			const_iterator find(const key_type &k) const
@@ -250,26 +268,26 @@ namespace ft
 					return (it);
 			}
 
-			size_type count(const key_type &k) const
-			{}
+			// size_type count(const key_type &k) const
+			// {}
 
-			iterator lower_bound(const key_type &k)
-			{}
+			// iterator lower_bound(const key_type &k)
+			// {}
 
-			const_iterator lower_bound(const key_type &k) const
-			{}
+			// const_iterator lower_bound(const key_type &k) const
+			// {}
 
-			iterator upper_bound(const key_type &k)
-			{}
+			// iterator upper_bound(const key_type &k)
+			// {}
 
-			const_iterator upper_bound(const key_type &k) const
-			{}
+			// const_iterator upper_bound(const key_type &k) const
+			// {}
 
-			pair<const_iterator, const_iterator> equal_range(const key_type &k) const
-			{}
+			// pair<const_iterator, const_iterator> equal_range(const key_type &k) const
+			// {}
 
-			pair<iterator, iterator> equal_range(const key_type &k)
-			{}
+			// pair<iterator, iterator> equal_range(const key_type &k)
+			// {}
 
 /* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
 **									ALLOCATOR FUNC									   **
