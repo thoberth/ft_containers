@@ -6,7 +6,7 @@
 /*   By: thoberth <thoberth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/07 16:08:20 by thoberth          #+#    #+#             */
-/*   Updated: 2022/02/16 01:49:25 by thoberth         ###   ########.fr       */
+/*   Updated: 2022/02/16 20:54:22 by thoberth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,16 +53,48 @@ class red_black_tree
 					: _comp(comp), _alloc(alloc), _size(0)
 		{
 			this->_sentinel = this->_alloc.allocate(1);
-			this->_root = this->_sentinel;
+			this->_alloc.construct(this->_sentinel, value_type());
 			this->_sentinel->parent = NULL;
 			this->_sentinel->left = NULL;
 			this->_sentinel->right = NULL;
+			this->_sentinel->color = BLACK;
+			this->_root = this->_sentinel;
 		}
 
 		virtual ~red_black_tree()
 		{
 			this->destroy_tree();
-			this->_alloc.deallocate(this->_sentinel, 1);
+			if(this->_sentinel != this->_root)
+			{
+				this->_alloc.destroy(this->_sentinel);
+				this->_alloc.deallocate(this->_sentinel, 1);
+			}
+		}
+
+		red_black_tree & operator=(const red_black_tree & x)
+		{
+			if (this != &x)
+			{
+				this->destroy_tree();
+				if (x._size == 0)
+					return *this;
+				ft::node<value_type> *to_destroy[x._size];
+				ft::node<value_type> * to_move = x._root;
+				size_t child = 1;
+				size_t parent = 1;
+				to_destroy[0] = x._root;
+
+				while (parent <= x._size)
+				{
+					if (to_move->left != x._sentinel)
+						to_destroy[child++] = to_move->left;
+					if (to_move->right != x._sentinel)
+						to_destroy[child++] = to_move->right;
+					this->insert(to_move->key_val);
+					to_move = to_destroy[parent++];
+				}
+			}
+			return (*this);
 		}
 
 		ft::node<value_type>*
@@ -81,16 +113,13 @@ class red_black_tree
 		void destroy_tree()
 		{
 			if (this->_size == 0)
-			{
-				std::cout << "rb tree size = 0" << std::endl;
 				return ;
-			}
 			ft::node<value_type> *to_destroy[this->_size];
 			size_t child = 1;
 			size_t parent = 1;
 			to_destroy[0] = this->_root;
 
-			while (parent <= this->_size)
+			while (parent < this->_size)
 			{
 				if (this->_root->left != this->_sentinel)
 					to_destroy[child++] = this->_root->left;
@@ -100,6 +129,13 @@ class red_black_tree
 				this->_alloc.deallocate(this->_root, 1);
 				this->_root = to_destroy[parent++];
 			}
+			this->_root = this->_sentinel;
+			this->_size = 0;
+		}
+
+		size_t max_size() const
+		{
+			return this->_alloc.max_size();
 		}
 
 		ft::node<value_type>* minimum(ft::node<value_type> *node) const
@@ -146,10 +182,12 @@ class red_black_tree
 			if (x->parent == this->_sentinel)
 				this->_root = y;
 			if (y->left != this->_sentinel)
+			{
 				x->right = y->left;
+				x->right->parent = x;
+			}
 			else
 				x->right = this->_sentinel;
-			x->right->parent = x;
 			y->parent = x->parent;
 			if (x->parent != this->_sentinel)
 			{
@@ -167,10 +205,12 @@ class red_black_tree
 			if (old_p->parent == this->_sentinel)
 				this->_root = new_p;
 			if (new_p->right != this->_sentinel)
+			{
 				old_p->left = new_p->right;
+				old_p->left->parent = old_p;
+			}
 			else
 				old_p->left = this->_sentinel;
-			old_p->left->parent = old_p;
 			new_p->parent = old_p->parent;
 			if (old_p->parent != this->_sentinel)
 			{
@@ -288,6 +328,7 @@ class red_black_tree
 						z_p->color = BLACK;
 						z_gp->color = RED;
 						left_rotate(z_gp, z_p); 
+
 					}
 				}
 				z_p = z->parent;
@@ -433,7 +474,7 @@ class red_black_tree
 		**	Function to show the tree
 		*/
 		void	put_tree(ft::node<value_type> *to_aff[] = NULL,
-			size_t nbr_tab = 50, size_t size_tab = 1)
+			size_t nbr_tab = 50, size_t size_tab = 1) const
 		{
 			if (this->_size == 0)
 			{
@@ -523,15 +564,5 @@ class red_black_tree
 			return this->_sentinel;
 		}
 };
-
-template<typename T1>
-ft::node<T1>*
- min_const(ft::node<T1> *root)
-{
-	ft::node<T1> *tmp = root;
-	while (tmp != tmp->left && tmp != root->parent)
-		tmp = tmp->left;
-	return tmp;
-}
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: thoberth <thoberth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/02 14:31:48 by thoberth          #+#    #+#             */
-/*   Updated: 2022/02/15 19:09:31 by thoberth         ###   ########.fr       */
+/*   Updated: 2022/02/16 21:03:22 by thoberth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,16 @@
 
 namespace ft
 {
-	template<typename T1>
+	template<typename Node_type, typename Value_type>
 	class bidirectional_iterator
 	{
 		public :
-			typedef	std::ptrdiff_t						difference_type;
-			typedef	ft::node<T1>						value_type;
-			typedef	typename ft::node<T1>*				pointer;
-			typedef	typename ft::node<T1>&				reference;
-			typedef	ft::bidirectional_iterator_tag		iterator_category;
+			typedef	std::ptrdiff_t							difference_type;
+			typedef Node_type								node_type;
+			typedef	Value_type								value_type;
+			typedef	value_type*					pointer;
+			typedef	value_type&					reference;
+			typedef	ft::bidirectional_iterator_tag			iterator_category;
 
 			bidirectional_iterator() : _elem(), _root(), _senti()
 			{}
@@ -38,18 +39,10 @@ namespace ft
 				_root(src._root), _senti(src._senti)
 			{ }
 
-			bidirectional_iterator(pointer elem) : _elem(elem)
+			bidirectional_iterator(node_type * elem, node_type * root) : _elem(elem)
 			{
-				pointer tmp = this->_elem;
-				if (tmp->parent == NULL)
-				{
-					this->_root = tmp;
-					this->_senti = tmp->parent;
-				}
-				while (tmp->parent->parent == NULL)
-					tmp = tmp->parent;
-				this->_root = tmp;
-				this->_senti = tmp->parent;
+				this->_root = root;
+				this->_senti = root->parent;
 			}
 
 			virtual ~bidirectional_iterator() {}
@@ -65,21 +58,21 @@ namespace ft
 				return *this;
 			}
 
-			operator bidirectional_iterator<const T1>() const
+			operator bidirectional_iterator<const Node_type, const Value_type>() const
 			{
-				return bidirectional_iterator<const T1>(this->base());
+				return bidirectional_iterator<const Node_type, const Value_type>(this->_elem, this->_root);
 			}
 
-			T1& operator*()
+			reference operator*()
 			{ return (this->_elem->key_val); }
 
-			const T1& operator*() const
+			reference operator*() const
 			{ return (this->_elem->key_val); }
 
-			T1	*operator->()
+			pointer operator->()
 			{ return (&this->operator*()); }
 
-			const T1	*operator->() const
+			const pointer operator->() const
 			{ return (&this->operator*()); }
 
 			bidirectional_iterator& operator++()
@@ -106,43 +99,53 @@ namespace ft
 				return (rtn);
 			}
 
-			pointer	base() const { return this->_elem; }
+			node_type	* base() const { return this->_elem; }
 
 		private :
-			pointer	_elem;
-			pointer _root;
-			pointer _senti;
+			node_type	*_elem;
+			node_type	*_root;
+			node_type	*_senti;
 
-			pointer _found_next_one(pointer node)
+			node_type	* _found_next_one(node_type	* node)
 			{
 				if (node == _maximum(this->_root))
 					return this->_senti;
 				if (node->right != this->_senti)
 					return (_minimum(node->right));
-				while (node != node->parent->left)
+				if (node != node->parent->left)
+				{
+					while (node != node->parent->left)
+						node = node->parent;
+				}
+				else
 					node = node->parent;
 				return node;
 			}
 
-			pointer _found_prec(pointer node)
+			node_type	* _found_prec(node_type	* node)
 			{
 				if (node == _minimum(this->_root))
 					return this->_senti;
 				if (node->left != this->_senti)
 					return (_maximum(node->left));
-				while (node != node->parent->right)
+				if (node != node->parent->right)
+				{
+					while (node != node->parent->right)
+						node = node->parent;
+				}
+				else
 					node = node->parent;
 				return node;
 			}
 
-			pointer _minimum(pointer node)
+			node_type	* _minimum(node_type	* node)
 			{
 				while (node->left != this->_senti)
 					node = node->left;
 				return node;
 			}
 
-			pointer _maximum(pointer node)
+			node_type	* _maximum(node_type	* node)
 			{
 				while (node->right != this->_senti)
 					node = node->right;
@@ -150,18 +153,18 @@ namespace ft
 			}
 	};
 
-	template<typename T, typename X>
-	bool operator==(const bidirectional_iterator<T> & A,
-		const bidirectional_iterator<X> & B)
+	template<typename Tx, typename Xx, typename Ty, typename Xy>
+	bool operator==(const bidirectional_iterator<Tx, Xx> & A,
+		const bidirectional_iterator<Ty, Xy> & B)
 	{
 		if (A.base() == B.base())
 			return (true);
 		return (false);
 	}
 
-	template<typename T, typename X>
-	bool operator!=(const bidirectional_iterator<T> & A,
-		const bidirectional_iterator<X> & B)
+	template<typename Tx, typename Xx, typename Ty, typename Xy>
+	bool operator!=(const bidirectional_iterator<Tx, Xx> & A,
+		const bidirectional_iterator<Ty, Xy> & B)
 	{
 		if (A.base() != B.base())
 			return (true);

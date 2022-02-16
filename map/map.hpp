@@ -6,7 +6,7 @@
 /*   By: thoberth <thoberth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/01 14:04:18 by thoberth          #+#    #+#             */
-/*   Updated: 2022/02/15 22:48:44 by thoberth         ###   ########.fr       */
+/*   Updated: 2022/02/16 20:58:41 by thoberth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,15 +30,16 @@ namespace ft
 		public :
 			typedef Key key_type;
 			typedef T mapped_type;
-			typedef ft::pair<const key_type, mapped_type> value_type;
+			typedef ft::pair<const key_type, mapped_type>value_type;
+			typedef ft::node<value_type> node_type;
 			typedef Compare key_compare;
 			typedef Alloc allocator_type;
 			typedef typename allocator_type::reference reference;
 			typedef typename allocator_type::const_reference const_reference;
 			typedef typename allocator_type::pointer pointer;
 			typedef typename allocator_type::const_pointer const_pointer;
-			typedef typename ft::bidirectional_iterator<value_type > iterator;
-			typedef typename ft::bidirectional_iterator<const value_type > const_iterator;
+			typedef typename ft::bidirectional_iterator<node_type, value_type > iterator;
+			typedef typename ft::bidirectional_iterator<const node_type, const value_type > const_iterator;
 			typedef typename ft::reverse_iterator<iterator> reverse_iterator;
 			typedef typename ft::reverse_iterator<const_iterator> const_reverse_iterator;
 			typedef typename ft::iterator_traits<iterator>::difference_type difference_type;
@@ -92,11 +93,14 @@ namespace ft
 
 			map& operator= (const map& x)
 			{
-				red_black_tree<value_type, key_type> tmp = this->_tree;
-				this->_tree = x._tree;
-				this->_comp = x._comp;
-				this->_alloc = x._alloc;
-				tmp.destroy_tree();
+				if (this != &x)
+				{
+					red_black_tree<value_type, key_type> tmp = this->_tree;
+					this->_tree = x._tree;
+					this->_comp = x._comp;
+					this->_alloc = x._alloc;
+					tmp.destroy_tree();
+				}
 				return *this;
 			}
 
@@ -106,23 +110,22 @@ namespace ft
 
 			iterator begin()
 			{
-				return (iterator(this->_tree.minimum(this->_tree.root())));
+				return iterator(this->_tree.minimum(this->_tree.root()), this->_tree.root());
 			}
 
 			const_iterator begin() const
 			{
-				ft::node<const value_type> *tmp = this->_tree.root();
-				return (const_iterator(min_const(tmp)));
+				return const_iterator(this->_tree.minimum(this->_tree.root()), this->_tree.root());
 			}
 
 			iterator end()
 			{
-				return (iterator(this->_tree.sentinel()));
+				return iterator(this->_tree.sentinel(), this->_tree.root());
 			}
 
 			const_iterator end() const
 			{
-				return (const_iterator(this->_tree.sentinel()));
+				return const_iterator(this->_tree.sentinel(), this->_tree.root());
 			}
 
 			reverse_iterator rbegin()
@@ -163,7 +166,7 @@ namespace ft
 
 			size_type max_size() const
 			{
-				return (this->_alloc.max_size());
+				return (this->_tree.max_size());
 			}
 
 /* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
@@ -216,7 +219,8 @@ namespace ft
 
 			size_type erase(const key_type &k)
 			{
-				this->_tree.erase(k);
+				iterator it = find(k);
+				this->_tree.erase(it.base());
 			}
 
 			void erase(iterator first, iterator last)
@@ -242,7 +246,7 @@ namespace ft
 
 			key_compare key_comp() const
 			{
-				return key_compare());
+				return key_compare();
 			}
 
 			value_compare value_comp() const
@@ -325,11 +329,11 @@ namespace ft
 				return it;
 			}
 
-			pair<const_iterator, const_iterator> equal_range(const key_type &k) const
-			{}
+			// pair<const_iterator, const_iterator> equal_range(const key_type &k) const
+			// {}
 
-			pair<iterator, iterator> equal_range(const key_type &k)
-			{}
+			// pair<iterator, iterator> equal_range(const key_type &k)
+			// {}
 
 /* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
 **									ALLOCATOR FUNC									   **
