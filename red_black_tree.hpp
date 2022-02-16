@@ -6,7 +6,7 @@
 /*   By: thoberth <thoberth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/07 16:08:20 by thoberth          #+#    #+#             */
-/*   Updated: 2022/02/14 17:09:11 by thoberth         ###   ########.fr       */
+/*   Updated: 2022/02/16 01:49:25 by thoberth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ class red_black_tree
 					: _comp(comp), _alloc(alloc), _size(0)
 		{
 			this->_sentinel = this->_alloc.allocate(1);
+			this->_root = this->_sentinel;
 			this->_sentinel->parent = NULL;
 			this->_sentinel->left = NULL;
 			this->_sentinel->right = NULL;
@@ -95,6 +96,7 @@ class red_black_tree
 					to_destroy[child++] = this->_root->left;
 				if (this->_root->right != this->_sentinel)
 					to_destroy[child++] = this->_root->right;
+				this->_alloc.destroy(this->_root);
 				this->_alloc.deallocate(this->_root, 1);
 				this->_root = to_destroy[parent++];
 			}
@@ -102,14 +104,14 @@ class red_black_tree
 
 		ft::node<value_type>* minimum(ft::node<value_type> *node) const
 		{
-			while (node->left != this->_sentinel)
+			while (node->left != this->_sentinel && node != this->_sentinel)
 				node = node->left;
 			return node;
 		}
 
 		ft::node<value_type>* maximum(ft::node<value_type> *node) const
 		{
-			while (node->right != this->_sentinel)
+			while (node->right != this->_sentinel && node != this->_sentinel)
 				node = node->right;
 			return node;
 		}
@@ -203,7 +205,7 @@ class red_black_tree
 		*/
 		void insert2(const value_type& ins, ft::node<value_type> *to_move, ft::node<value_type> *to_ins)
 		{
-			if (this->_comp(ins, to_move->key_val)) /* if key of ins < key root */
+			if (this->_comp(ins, to_move->key_val)) /* if key of ins < key of to_move */
 			{
 				if (to_move->left == this->_sentinel)
 				{
@@ -521,5 +523,15 @@ class red_black_tree
 			return this->_sentinel;
 		}
 };
+
+template<typename T1>
+ft::node<T1>*
+ min_const(ft::node<T1> *root)
+{
+	ft::node<T1> *tmp = root;
+	while (tmp != tmp->left && tmp != root->parent)
+		tmp = tmp->left;
+	return tmp;
+}
 
 #endif

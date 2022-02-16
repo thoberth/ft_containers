@@ -6,7 +6,7 @@
 /*   By: thoberth <thoberth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/02 14:31:48 by thoberth          #+#    #+#             */
-/*   Updated: 2022/02/14 17:48:30 by thoberth         ###   ########.fr       */
+/*   Updated: 2022/02/15 19:09:31 by thoberth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ namespace ft
 				this->_senti = tmp->parent;
 			}
 
+			virtual ~bidirectional_iterator() {}
+
 			bidirectional_iterator&	operator=(const bidirectional_iterator &to_copy)
 			{
 				if (this != &to_copy)
@@ -61,6 +63,11 @@ namespace ft
 					this->_senti = to_copy._senti;
 				}
 				return *this;
+			}
+
+			operator bidirectional_iterator<const T1>() const
+			{
+				return bidirectional_iterator<const T1>(this->base());
 			}
 
 			T1& operator*()
@@ -100,11 +107,6 @@ namespace ft
 			}
 
 			pointer	base() const { return this->_elem; }
-
-			operator bidirectional_iterator<const value_type>() const
-			{
-				return bidirectional_iterator<const value_type>(this->_elem);
-			}
 
 		private :
 			pointer	_elem;

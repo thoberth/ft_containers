@@ -6,7 +6,7 @@
 /*   By: thoberth <thoberth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/01 14:04:18 by thoberth          #+#    #+#             */
-/*   Updated: 2022/02/14 17:36:47 by thoberth         ###   ########.fr       */
+/*   Updated: 2022/02/15 22:48:44 by thoberth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ namespace ft
 			typedef typename ft::bidirectional_iterator<value_type > iterator;
 			typedef typename ft::bidirectional_iterator<const value_type > const_iterator;
 			typedef typename ft::reverse_iterator<iterator> reverse_iterator;
-			typedef typename ft::reverse_iterator<const iterator> const_reverse_iterator;
+			typedef typename ft::reverse_iterator<const_iterator> const_reverse_iterator;
 			typedef typename ft::iterator_traits<iterator>::difference_type difference_type;
 			typedef size_t size_type;
 
@@ -94,6 +94,8 @@ namespace ft
 			{
 				red_black_tree<value_type, key_type> tmp = this->_tree;
 				this->_tree = x._tree;
+				this->_comp = x._comp;
+				this->_alloc = x._alloc;
 				tmp.destroy_tree();
 				return *this;
 			}
@@ -104,12 +106,13 @@ namespace ft
 
 			iterator begin()
 			{
-				return iterator(this->_tree.minimum(this->_tree.root()));
+				return (iterator(this->_tree.minimum(this->_tree.root())));
 			}
 
 			const_iterator begin() const
 			{
-				return const_iterator(this->_tree.minimum(this->_tree.root()));
+				ft::node<const value_type> *tmp = this->_tree.root();
+				return (const_iterator(min_const(tmp)));
 			}
 
 			iterator end()
@@ -169,7 +172,7 @@ namespace ft
 
 			mapped_type& operator[] (const key_type& k)
 			{
-				return *(find(k)).first;
+				return find(k)->second;
 			}
 
 /* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
@@ -201,7 +204,8 @@ namespace ft
 			{
 				while (first != last)
 				{
-					this->_tree.insert(first++);
+					this->_tree.insert(*first);
+					first++;
 				}
 			}
 
@@ -220,6 +224,7 @@ namespace ft
 				while (first != last)
 				{
 					this->_tree.erase(first.base());
+					first++;
 				}
 			}
 
@@ -235,11 +240,15 @@ namespace ft
 **									OBSERVERS FUNC									   **
 ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
 
-			// key_compare key_comp() const
-			// {}
+			key_compare key_comp() const
+			{
+				return key_compare());
+			}
 
-			// value_compare value_comp() const
-			// {}
+			value_compare value_comp() const
+			{
+				return value_compare(key_compare());
+			}
 
 /* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
 **									OPERATIONS FUNC									   **
@@ -248,46 +257,79 @@ namespace ft
 			iterator find (const key_type& k)
 			{
 				iterator it = this->begin();
-				while (it != this->end() || it->first != k)
+				while (it != this->end() && it->first != k)
 				{
 					it++;
 				}
 				if (it->first == k)
 					return (it);
-				return this->_tree.sentinel();
+				return this->end();
 			}
 
 			const_iterator find(const key_type &k) const
 			{
 				const_iterator it = this->begin();
-				while (it != this->end() || it->first != k)
+				while (it != this->end() && it->first != k)
 				{
 					it++;
 				}
 				if (it->first == k)
 					return (it);
+				return this->end();
 			}
 
-			// size_type count(const key_type &k) const
-			// {}
+			size_type count(const key_type &k) const
+			{
+				if (find(k) != this->_tree.sentinel())
+					return 1;
+				return 0;
+			}
 
-			// iterator lower_bound(const key_type &k)
-			// {}
+			iterator lower_bound(const key_type &k)
+			{
+				iterator it = this->begin();
+				while (this->_comp(it->first, k) && it != this->end())
+				{
+					it++;
+				}
+				return it;
+			}
 
-			// const_iterator lower_bound(const key_type &k) const
-			// {}
+			const_iterator lower_bound(const key_type &k) const
+			{
+				const_iterator it = this->begin();
+				while (this->_comp(it->first, k) && it != this->end())
+				{
+					it++;
+				}
+				return it;
+			}
 
-			// iterator upper_bound(const key_type &k)
-			// {}
+			iterator upper_bound(const key_type &k)
+			{
+				iterator it = this->begin();
+				while ((this->_comp(k, it->first)) && it != this->end())
+				{
+					it++;
+				}
+				return it;
+			}
 
-			// const_iterator upper_bound(const key_type &k) const
-			// {}
+			const_iterator upper_bound(const key_type &k) const
+			{
+				const_iterator it = this->begin();
+				while ((this->_comp(k, it->first)) && it != this->end())
+				{
+					it++;
+				}
+				return it;
+			}
 
-			// pair<const_iterator, const_iterator> equal_range(const key_type &k) const
-			// {}
+			pair<const_iterator, const_iterator> equal_range(const key_type &k) const
+			{}
 
-			// pair<iterator, iterator> equal_range(const key_type &k)
-			// {}
+			pair<iterator, iterator> equal_range(const key_type &k)
+			{}
 
 /* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
 **									ALLOCATOR FUNC									   **
