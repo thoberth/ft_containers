@@ -6,7 +6,7 @@
 /*   By: thoberth <thoberth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/07 16:08:20 by thoberth          #+#    #+#             */
-/*   Updated: 2022/02/16 20:54:22 by thoberth         ###   ########.fr       */
+/*   Updated: 2022/02/17 17:48:49 by thoberth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -340,10 +340,7 @@ class red_black_tree
 		void	erase(ft::node<value_type> *z)
 		{
 			if (this->_size == 0)
-			{
-				std::cout << "rb tree size = 0" << std::endl;
 				return ;
-			}
 			int color = z->color;
 			ft::node<value_type> *y = z;
 			ft::node<value_type> *x;
@@ -396,7 +393,7 @@ class red_black_tree
 					{
 						s->color = BLACK;
 						x->parent->color = RED;
-						left_rotate(x->parent, x);
+						left_rotate(x->parent, x->parent->right);
 						s = x->parent->right;
 					}
 					if (s->left->color == BLACK && s->right->color == BLACK)
@@ -408,6 +405,7 @@ class red_black_tree
 					{
 						if (s->right->color == BLACK)
 						{
+							std::cerr << "1.4\n";
 							s->left->color = BLACK;
 							s->color = RED;
 							right_rotate(s->left, s);
@@ -416,7 +414,7 @@ class red_black_tree
 						s->color = x->parent->color;
 						x->parent->color = BLACK;
 						s->right->color = BLACK;
-						left_rotate(x->parent, x);
+						left_rotate(x->parent, x->parent->right);
 						x = this->_root;
 					}
 				}
@@ -441,10 +439,9 @@ class red_black_tree
 						{
 							s->right->color = BLACK;
 							s->color = RED;
-							left_rotate(s, s->parent);
+							left_rotate(s, s->right);
 							s = x->parent->left;
 						}
-
 						s->color = x->parent->color;
 						x->parent->color = BLACK;
 						s->left->color = BLACK;

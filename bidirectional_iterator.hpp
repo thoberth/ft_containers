@@ -6,7 +6,7 @@
 /*   By: thoberth <thoberth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/02 14:31:48 by thoberth          #+#    #+#             */
-/*   Updated: 2022/02/16 21:03:22 by thoberth         ###   ########.fr       */
+/*   Updated: 2022/02/17 17:35:25 by thoberth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,8 @@ namespace ft
 			bidirectional_iterator& operator++()
 			{
 				this->_elem = _found_next_one(_elem);
-				return *this; }
+				return *this;
+			}
 
 			bidirectional_iterator operator++(int)
 			{
@@ -90,7 +91,8 @@ namespace ft
 			bidirectional_iterator& operator--()
 			{
 				this->_elem = _found_prec(_elem);
-				return *this; }
+				return *this;
+			}
 
 			bidirectional_iterator operator--(int)
 			{
@@ -108,7 +110,7 @@ namespace ft
 
 			node_type	* _found_next_one(node_type	* node)
 			{
-				if (node == _maximum(this->_root))
+				if (node == _maximum(this->_root) || node == this->_senti)
 					return this->_senti;
 				if (node->right != this->_senti)
 					return (_minimum(node->right));
@@ -117,13 +119,14 @@ namespace ft
 					while (node != node->parent->left)
 						node = node->parent;
 				}
-				else
-					node = node->parent;
+				node = node->parent;
 				return node;
 			}
 
 			node_type	* _found_prec(node_type	* node)
 			{
+				if (node == this->_senti)
+					return (_maximum(this->_root));
 				if (node == _minimum(this->_root))
 					return this->_senti;
 				if (node->left != this->_senti)
@@ -133,8 +136,7 @@ namespace ft
 					while (node != node->parent->right)
 						node = node->parent;
 				}
-				else
-					node = node->parent;
+				node = node->parent;
 				return node;
 			}
 
@@ -148,7 +150,9 @@ namespace ft
 			node_type	* _maximum(node_type	* node)
 			{
 				while (node->right != this->_senti)
+				{
 					node = node->right;
+				}
 				return node;
 			}
 	};

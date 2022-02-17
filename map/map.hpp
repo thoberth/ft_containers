@@ -6,7 +6,7 @@
 /*   By: thoberth <thoberth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/01 14:04:18 by thoberth          #+#    #+#             */
-/*   Updated: 2022/02/16 20:58:41 by thoberth         ###   ########.fr       */
+/*   Updated: 2022/02/17 19:10:52 by thoberth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,7 @@ namespace ft
 				if (this != &x)
 				{
 					red_black_tree<value_type, key_type> tmp = this->_tree;
+					std::cerr << "test2\n";
 					this->_tree = x._tree;
 					this->_comp = x._comp;
 					this->_alloc = x._alloc;
@@ -107,6 +108,8 @@ namespace ft
 /* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
 **									ITERATOR FUNC									   **
 ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
+
+			void put_tree() const { this->_tree.put_tree(); }
 
 			iterator begin()
 			{
@@ -175,7 +178,10 @@ namespace ft
 
 			mapped_type& operator[] (const key_type& k)
 			{
-				return find(k)->second;
+				ft::pair<iterator, bool> it;
+
+				it = this->insert(ft::make_pair(k, mapped_type()));
+				return it.first->second;
 			}
 
 /* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
@@ -220,16 +226,33 @@ namespace ft
 			size_type erase(const key_type &k)
 			{
 				iterator it = find(k);
-				this->_tree.erase(it.base());
+				if (it != this->end())
+				{
+					this->_tree.erase(it.base());
+					return 1;
+				}
+				return 0;
 			}
 
 			void erase(iterator first, iterator last)
 			{
+				size_t s = 0;
+				size_t t = 0;
+				iterator tmp = first;
+				while (tmp != last)
+				{
+					tmp++;
+					s++;
+				}
+				key_type tab[s];
+				s = 0;
 				while (first != last)
 				{
-					this->_tree.erase(first.base());
+					tab[s++] = first->first;
 					first++;
 				}
+				while (t < s)
+					this->erase(tab[t++]);
 			}
 
 			// void swap (map& x)
