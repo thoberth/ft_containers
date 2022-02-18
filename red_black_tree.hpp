@@ -6,7 +6,7 @@
 /*   By: thoberth <thoberth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/07 16:08:20 by thoberth          #+#    #+#             */
-/*   Updated: 2022/02/17 17:48:49 by thoberth         ###   ########.fr       */
+/*   Updated: 2022/02/18 15:13:04 by thoberth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ class red_black_tree
 		virtual ~red_black_tree()
 		{
 			this->destroy_tree();
-			if(this->_sentinel != this->_root)
+			if(this->_root != this->_sentinel)
 			{
 				this->_alloc.destroy(this->_sentinel);
 				this->_alloc.deallocate(this->_sentinel, 1);
@@ -95,6 +95,13 @@ class red_black_tree
 				}
 			}
 			return (*this);
+		}
+
+		void swap(red_black_tree &x)
+		{
+			std::swap(this->_root, x._root);
+			std::swap(this->_sentinel, x._sentinel);
+			std::swap(this->_size, x._size);
 		}
 
 		ft::node<value_type>*
