@@ -6,7 +6,7 @@
 /*   By: thoberth <thoberth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/07 16:08:20 by thoberth          #+#    #+#             */
-/*   Updated: 2022/02/18 15:13:04 by thoberth         ###   ########.fr       */
+/*   Updated: 2022/02/23 16:08:11 by thoberth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,10 @@ template<typename value_type, typename key_type, typename Compare = std::less<ke
 class red_black_tree
 {
 	public:
+		typedef ft::node<value_type> node_type;
+		typedef typename ft::bidirectional_iterator<node_type, value_type > iterator;
+		typedef typename ft::bidirectional_iterator<const node_type, const value_type > const_iterator;
+
 		class value_compare : public std::binary_function<value_type, value_type, bool>
 			{
 				friend class red_black_tree;
@@ -230,7 +234,7 @@ class red_black_tree
 			new_p->right = old_p;
 		}
 
-		void insert(const value_type& ins)
+		ft::node<value_type>* insert(const value_type& ins)
 		{
 			ft::node<value_type> *to_move = this->_root;
 			ft::node<value_type> *to_ins = NULL;
@@ -240,17 +244,16 @@ class red_black_tree
 					this->_sentinel, ins, BLACK);
 				this->_root = to_ins;
 				this->_size++;
+				return (this->_root);
 			}
 			else
-			{
-				insert2(ins, to_move, to_ins);
-			}
+				return (insert2(ins, to_move, to_ins));
 		}
 
 		/*
 		** Try to insert in the tree.
 		*/
-		void insert2(const value_type& ins, ft::node<value_type> *to_move, ft::node<value_type> *to_ins)
+		ft::node<value_type>* insert2(const value_type& ins, ft::node<value_type> *to_move, ft::node<value_type> *to_ins)
 		{
 			if (this->_comp(ins, to_move->key_val)) /* if key of ins < key of to_move */
 			{
@@ -260,17 +263,19 @@ class red_black_tree
 						this->_sentinel, ins, RED);
 					to_move->left = to_ins;
 					this->_size++;
+					to_move = to_ins;
 					rb_tree_post_insert(to_ins);
+					return to_move;
 				}
 				else
 				{
 					to_move = to_move->left;
-					insert2(ins, to_move, to_ins);
+					return insert2(ins, to_move, to_ins);
 				}
 			}
 			else if (!(this->_comp(ins, to_move->key_val)) &&
 					 !(this->_comp(to_move->key_val, ins))) /* if equal the new insert is ignored */
-				return ;
+				return to_move;
 			else
 			{
 				if (to_move->right == this->_sentinel)
@@ -279,12 +284,14 @@ class red_black_tree
 						this->_sentinel, ins, RED);
 					to_move->right = to_ins;
 					this->_size++;
+					to_move = to_ins;
 					rb_tree_post_insert(to_ins);
+					return to_move;
 				}
 				else
 				{
 					to_move = to_move->right;
-					insert2(ins, to_move, to_ins);
+					return insert2(ins, to_move, to_ins);
 				}
 			}
 		}

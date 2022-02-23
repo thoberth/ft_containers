@@ -6,7 +6,7 @@
 /*   By: thoberth <thoberth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/01 14:04:18 by thoberth          #+#    #+#             */
-/*   Updated: 2022/02/18 18:15:00 by thoberth         ###   ########.fr       */
+/*   Updated: 2022/02/23 16:11:27 by thoberth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,21 +187,22 @@ namespace ft
 			pair<iterator, bool> insert(const value_type &val)
 			{
 				ft::pair<iterator, bool> to_ret;
-				size_type t_tmp = this->_tree.size();
-				_tree.insert(val);
-				if (this->_tree.size() != t_tmp)
+				size_t s = this->_tree.size();
+				ft::node<value_type>* ptr = this->_tree.insert(val);
+				iterator it(ptr, this->_tree.root());
+				if (s != this->_tree.size())
 					to_ret.second = true;
 				else
 					to_ret.second = false;
-				to_ret.first = find(val.first);
+				to_ret.first = it;
 				return (to_ret);
 			}
 
 			iterator insert(iterator position, const value_type &val)
 			{
-				insert(val);
-				position = find(val.first);
-				return (position);
+				(void)position;
+				ft::pair<iterator, bool> p = insert(val);
+				return (p.first);
 			}
 
 			template <class InputIterator>
