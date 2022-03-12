@@ -6,7 +6,7 @@
 /*   By: thoberth <thoberth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 15:27:34 by thoberth          #+#    #+#             */
-/*   Updated: 2022/02/14 13:56:34 by thoberth         ###   ########.fr       */
+/*   Updated: 2022/03/12 17:39:22 by thoberth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 #include <memory>
 #include <vector>
 #include <stdexcept>
-#include "../random_access_iterator.hpp"
-#include "../reverse_iterator.hpp"
+#include "../utils/random_access_iterator.hpp"
+#include "../utils/reverse_iterator.hpp"
 
 
 namespace ft {

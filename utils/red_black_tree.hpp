@@ -6,7 +6,7 @@
 /*   By: thoberth <thoberth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/07 16:08:20 by thoberth          #+#    #+#             */
-/*   Updated: 2022/02/25 09:27:20 by thoberth         ###   ########.fr       */
+/*   Updated: 2022/03/12 17:22:04 by thoberth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,11 +68,8 @@ class red_black_tree
 		virtual ~red_black_tree()
 		{
 			this->destroy_tree();
-			if(this->_root != this->_sentinel)
-			{
-				this->_alloc.destroy(this->_sentinel);
-				this->_alloc.deallocate(this->_sentinel, 1);
-			}
+			this->_alloc.destroy(this->_sentinel);
+			this->_alloc.deallocate(this->_sentinel, 1);
 		}
 
 		red_black_tree & operator=(const red_black_tree & x)
@@ -125,23 +122,14 @@ class red_black_tree
 		{
 			if (this->_size == 0)
 				return ;
-			ft::node<value_type> *to_destroy[this->_size];
-			size_t child = 1;
-			size_t parent = 1;
-			to_destroy[0] = this->_root;
-
-			while (parent < this->_size)
+			ft::node<value_type> *it = this->minimum(this->_root);
+			while (this->_size > 0)
 			{
-				if (this->_root->left != this->_sentinel)
-					to_destroy[child++] = this->_root->left;
-				if (this->_root->right != this->_sentinel)
-					to_destroy[child++] = this->_root->right;
-				this->_alloc.destroy(this->_root);
-				this->_alloc.deallocate(this->_root, 1);
-				this->_root = to_destroy[parent++];
+				this->erase(it);
+				if (this->_size > 0)
+					it = this->minimum(this->_root);
 			}
 			this->_root = this->_sentinel;
-			this->_size = 0;
 		}
 
 		size_t max_size() const

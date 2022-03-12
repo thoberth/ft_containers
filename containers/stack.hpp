@@ -6,11 +6,11 @@
 /*   By: thoberth <thoberth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/01 09:45:03 by thoberth          #+#    #+#             */
-/*   Updated: 2022/02/01 12:34:06 by thoberth         ###   ########.fr       */
+/*   Updated: 2022/03/12 17:39:15 by thoberth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../vector/vector.hpp"
+#include "vector.hpp"
 
 namespace ft 
 {
