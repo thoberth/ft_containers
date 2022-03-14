@@ -6,7 +6,7 @@
 /*   By: thoberth <thoberth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/07 16:08:20 by thoberth          #+#    #+#             */
-/*   Updated: 2022/03/12 17:22:04 by thoberth         ###   ########.fr       */
+/*   Updated: 2022/03/14 10:22:59 by thoberth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define RED_BLACK_TREE_HPP
 
 #include "ft_utils.hpp"
+#include "bidirectional_iterator.hpp"
 
 # define RED 0
 # define BLACK 1

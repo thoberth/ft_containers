@@ -6,7 +6,7 @@
 /*   By: thoberth <thoberth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 15:27:34 by thoberth          #+#    #+#             */
-/*   Updated: 2022/03/12 17:39:22 by thoberth         ###   ########.fr       */
+/*   Updated: 2022/03/14 15:17:33 by thoberth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,13 @@ namespace ft {
 		typedef	typename ft::iterator_traits<iterator>::difference_type	difference_type;
 		typedef	size_t											size_type;
 
+	private :
+		allocator_type	_alloc;
+		pointer			_ptr;
+		size_type		_size;
+		size_type		_capacity;
+
+	public:
 		/* Construct an empty container, with no elements. */
 		explicit vector (const allocator_type& alloc = allocator_type()) :
 			_alloc(alloc), _ptr(NULL), _size(0), _capacity(0) { _ptr = _alloc.allocate(0); }
@@ -89,16 +96,19 @@ namespace ft {
 
 		vector& operator=(const vector& x)
 		{
-			this->clear();
-			if (x._size > this->_capacity)
+			if (&x != this)
 			{
-				_alloc.deallocate(_ptr, _capacity);
-				this->_ptr = _alloc.allocate(x._size);
+				this->clear();
+				if (x._size > this->_capacity)
+				{
+					_alloc.deallocate(_ptr, _capacity);
+					this->_ptr = _alloc.allocate(x._size);
+				}
+				this->_size = x._size;
+				this->_capacity = x._size;
+				for (size_type i(0); i < _size; i++)
+					_alloc.construct(_ptr + i, x[i]);
 			}
-			this->_size = x._size;
-			this->_capacity = x._size;
-			for (size_type i(0); i < _size ; i++)
-				_alloc.construct(_ptr + i, x[i]);
 			return *this;
 		}
 
@@ -172,14 +182,13 @@ namespace ft {
 			if (this->_capacity < n)
 			{
 				pointer prev_ptr = _ptr;
-				pointer	tmp = _ptr;
 				this->_ptr = _alloc.allocate(n);
 				for (size_type i(0); i < _size; i++)
 				{
 					_alloc.construct(_ptr + i, prev_ptr[i]);
 					_alloc.destroy(prev_ptr + i);
 				}
-				_alloc.deallocate(tmp, _capacity);
+				_alloc.deallocate(prev_ptr, _capacity);
 				_capacity = n;
 			}
 		}
@@ -368,15 +377,17 @@ namespace ft {
 
 		iterator erase (iterator first, iterator last)
 		{
-			difference_type len = last - first;
+			difference_type len = last - first; /* nbr d'elements a supprimer */
 			difference_type index = first - this->begin();
-			difference_type to_ret = index;
+			difference_type to_ret = index; /* index a retourner */
+			int i = this->_size - (len + index); /* nbr d'elements a deplacer */
 
-			while (first != (this->end() - 1))
+			while (i) /* on deplace les elements */
 			{
 				_ptr[index] = _ptr[index + len];
 				first++;
 				index++;
+				i--;
 			}
 			while (len)
 			{
@@ -419,11 +430,6 @@ namespace ft {
 
 		allocator_type get_allocator() const { return _alloc; }
 
-	private :
-		allocator_type	_alloc;
-		pointer			_ptr;
-		size_type		_size;
-		size_type		_capacity;
 	};
 
 /* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
