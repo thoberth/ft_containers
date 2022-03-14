@@ -6,7 +6,7 @@
 /*   By: thoberth <thoberth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 15:27:34 by thoberth          #+#    #+#             */
-/*   Updated: 2022/03/14 15:17:33 by thoberth         ###   ########.fr       */
+/*   Updated: 2022/03/14 19:04:13 by thoberth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ namespace ft {
 	public:
 		/* Construct an empty container, with no elements. */
 		explicit vector (const allocator_type& alloc = allocator_type()) :
-			_alloc(alloc), _ptr(NULL), _size(0), _capacity(0) { _ptr = _alloc.allocate(0); }
+			_alloc(alloc), _ptr(NULL), _size(0), _capacity(0) {}
 
 		/* Constructs a container with n elements. Each element is a copy of val. */
 		explicit vector (size_type n, const value_type& val = value_type(),
@@ -87,7 +87,7 @@ namespace ft {
 			insert(this->begin(), x.begin(), x.end());
 		}
 
-		~vector()
+		virtual ~vector()
 		{
 			this->clear();
 			if (_capacity > 0)
@@ -161,6 +161,8 @@ namespace ft {
 		{
 			if (this->_size < n)
 			{
+				if ((this->_capacity * 2) < n)
+					this->reserve(n);
 				while (this->_size < n)
 					this->insert(this->end(), val);
 			}
@@ -177,6 +179,8 @@ namespace ft {
 
 		void reserve (size_type n)
 		{
+			if (n > this->max_size())
+				throw std::length_error("vector::reserve");
 			if (n == 0)
 				return ;
 			if (this->_capacity < n)
@@ -249,14 +253,13 @@ namespace ft {
 			size_type len = 0;
 			while (tmp++ != last)
 				len++;
-			if (_capacity == 0 && len > 0)
+			this->resize(len);
+			//if (len > _capacity)
+			//	this->reserve(len);
+			for(int i = 0; first != last; i++, first++)
 			{
-				reserve(1);
+				this->_ptr[i] = *first;
 			}
-			this->clear();
-			if (len > _capacity)
-				this->reserve(len);
-			insert(this->begin(), first, last);
 		}
 
 		void assign (size_type n, const value_type& val)
@@ -298,10 +301,13 @@ namespace ft {
 			int i = n;
 			size_type j = _size;
 
-			if (_capacity == 0)
-				reserve(1);
-			while (_size + n > _capacity)
-				reserve(_capacity * 2);
+			if (_size + n > _capacity)
+			{
+				if ((this->_capacity * 2) > (this->_capacity + n))
+					reserve(this->_size * 2);
+				else
+					reserve(this->_capacity + n);
+			}
 			if (_size != 0 && static_cast<unsigned long>(index) != _size)
 			{
 				while (to_construct)
@@ -347,10 +353,13 @@ namespace ft {
 
 			while (tmp++ != last)
 				len++;
-			if (_capacity == 0)
-				reserve(1);
 			if (len + _size >= _capacity)
-				reserve(_size + len);
+			{
+				if ((this->_capacity * 2) > (this->_capacity + len))
+					reserve(this->_size * 2);
+				else
+					reserve(this->_capacity + len);
+			}
 			t = len;
 			while (len)
 			{
@@ -417,9 +426,10 @@ namespace ft {
 
 		void clear()
 		{
-			if (_size > 0)
+			int i = this->_size;
+			if (i > 0)
 			{
-				for (; _size > 0; _size--)
+				for (; i > 0; _size--, i--)
 					_alloc.destroy(&_ptr[_size - 1]);
 			}
 		}

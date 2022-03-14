@@ -6,7 +6,7 @@
 /*   By: thoberth <thoberth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/01 14:04:18 by thoberth          #+#    #+#             */
-/*   Updated: 2022/03/12 17:38:58 by thoberth         ###   ########.fr       */
+/*   Updated: 2022/03/14 15:35:00 by thoberth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ namespace ft
 			map(const map &x)
 			{ *this = x; }
 
-			~map()
+			virtual ~map()
 			{}
 
 			map& operator= (const map& x)
