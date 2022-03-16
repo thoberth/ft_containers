@@ -6,9 +6,12 @@
 /*   By: thoberth <thoberth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 15:27:34 by thoberth          #+#    #+#             */
-/*   Updated: 2022/03/14 19:04:13 by thoberth         ###   ########.fr       */
+/*   Updated: 2022/03/16 12:57:58 by thoberth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#ifndef VECTOR_HPP
+# define VECTOR_HPP
 
 #include <iostream>
 #include <algorithm>
@@ -90,8 +93,10 @@ namespace ft {
 		virtual ~vector()
 		{
 			this->clear();
-			if (_capacity > 0)
+			if (this->_capacity > 0 && this->_ptr != NULL)
+			{
 				_alloc.deallocate(_ptr, _capacity);
+			}
 		}
 
 		vector& operator=(const vector& x)
@@ -101,9 +106,11 @@ namespace ft {
 				this->clear();
 				if (x._size > this->_capacity)
 				{
-					_alloc.deallocate(_ptr, _capacity);
+					this->_alloc.deallocate(_ptr, _capacity);
 					this->_ptr = _alloc.allocate(x._size);
 				}
+				else if (x._ptr == NULL && this->_ptr != NULL)
+					_alloc.deallocate(_ptr, _capacity);
 				this->_size = x._size;
 				this->_capacity = x._size;
 				for (size_type i(0); i < _size; i++)
@@ -254,8 +261,6 @@ namespace ft {
 			while (tmp++ != last)
 				len++;
 			this->resize(len);
-			//if (len > _capacity)
-			//	this->reserve(len);
 			for(int i = 0; first != last; i++, first++)
 			{
 				this->_ptr[i] = *first;
@@ -426,12 +431,8 @@ namespace ft {
 
 		void clear()
 		{
-			int i = this->_size;
-			if (i > 0)
-			{
-				for (; i > 0; _size--, i--)
-					_alloc.destroy(&_ptr[_size - 1]);
-			}
+			for (; this->_size > 0; _size--)
+				_alloc.destroy(&_ptr[this->_size - 1]);
 		}
 
 /* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
@@ -496,3 +497,5 @@ namespace ft {
 		x.swap(y);
 	}
 }
+
+#endif

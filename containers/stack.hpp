@@ -6,9 +6,12 @@
 /*   By: thoberth <thoberth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/01 09:45:03 by thoberth          #+#    #+#             */
-/*   Updated: 2022/03/12 17:39:15 by thoberth         ###   ########.fr       */
+/*   Updated: 2022/03/16 12:58:38 by thoberth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#ifndef STACK_HPP
+# define STACK_HPP
 
 #include "vector.hpp"
 
@@ -81,3 +84,5 @@ namespace ft
 	bool operator>=(const stack<T, Container> &lhs, const stack<T, Container> &rhs)
 	{ return (!(lhs < rhs)); }
 }
+
+#endif

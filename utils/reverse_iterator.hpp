@@ -6,9 +6,12 @@
 /*   By: thoberth <thoberth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/29 16:06:33 by thoberth          #+#    #+#             */
-/*   Updated: 2022/02/11 17:17:07 by thoberth         ###   ########.fr       */
+/*   Updated: 2022/03/16 12:59:18 by thoberth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#ifndef REVERSE_ITERATOR_HPP
+# define REVERSE_ITERATOR_HPP
 
 #include "iterator_traits.hpp"
 #include "iterator.hpp"
@@ -191,3 +194,5 @@ namespace ft
 		return (reverse_iterator<T>(rai.base() - n));
 	}
 }
+
+#endif
