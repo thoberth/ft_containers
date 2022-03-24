@@ -6,7 +6,7 @@
 /*   By: thoberth <thoberth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/01 14:04:18 by thoberth          #+#    #+#             */
-/*   Updated: 2022/03/14 15:35:00 by thoberth         ###   ########.fr       */
+/*   Updated: 2022/03/21 18:41:21 by thoberth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include "../utils/reverse_iterator.hpp"
 #include "../utils/bidirectional_iterator.hpp"
 #include "../utils/red_black_tree.hpp"
+#include "vector.hpp"
 #include <map>
 
 namespace ft
@@ -233,23 +234,18 @@ namespace ft
 
 			void erase(iterator first, iterator last)
 			{
-				size_t s = 0;
-				size_t t = 0;
-				iterator tmp = first;
-				while (tmp != last)
-				{
-					tmp++;
-					s++;
-				}
-				key_type tab[s];
-				s = 0;
+
+				ft::vector<key_type> tab;
+				// key_type tab[s];
 				while (first != last)
 				{
-					tab[s++] = first->first;
+					tab.push_back(first->first);
 					first++;
 				}
-				while (t < s)
-					this->erase(tab[t++]);
+				typename ft::vector<key_type>::iterator it = tab.begin();
+				typename ft::vector<key_type>::iterator ite = tab.end();
+				for(; it != ite ; it++)
+					this->erase(*it);
 			}
 
 			void swap (map& x)

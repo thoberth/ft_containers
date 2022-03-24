@@ -6,7 +6,7 @@
 /*   By: thoberth <thoberth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/07 16:08:20 by thoberth          #+#    #+#             */
-/*   Updated: 2022/03/14 10:22:59 by thoberth         ###   ########.fr       */
+/*   Updated: 2022/03/21 18:02:03 by thoberth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -473,81 +473,81 @@ class red_black_tree
 		/*
 		**	Function to show the tree
 		*/
-		void	put_tree(ft::node<value_type> *to_aff[] = NULL,
-			size_t nbr_tab = 50, size_t size_tab = 1) const
-		{
-			if (this->_size == 0)
-			{
-				std::cout << "rb tree size = 0" << std::endl;
-				return ;
-			}
-			size_t i = 0;
-			size_t t = 0;
-			size_t nbr_tab2 = nbr_tab;
-			size_tab *= 2;
-			ft::node<value_type> *to_aff2[size_tab];
-			if (to_aff == NULL)
-			{
-				if (this->_root->left != this->_sentinel)
-					to_aff2[i++] = this->_root->left;
-				else
-					to_aff2[i++] = NULL;
-				if (this->_root->right != this->_sentinel)
-					to_aff2[i++] = this->_root->right;
-				else
-					to_aff2[i++] = NULL;
-				for (int tab = nbr_tab2; tab > 0; --tab)
-					std::cout << ' ';
-				std::cout << this->_root->key_val.first;
-				if (this->_root->color == RED)
-					std::cout << "R\n";
-				else
-					std::cout << "B\n";
-				put_tree(to_aff2, nbr_tab - 2, size_tab);
-			}
-			else
-			{
-				for (int tab = nbr_tab2; tab > 0; --tab)
-					std::cout << ' ';
-				std::cout << '|';
-				while (i < (size_tab / 2))
-				{
-					if (to_aff[i] != NULL)
-					{
-						std::cout << to_aff[i]->key_val.first;
-						if (to_aff[i]->color == RED)
-							std::cout << "R";
-						else
-							std::cout << "B";
-					}
-					else
-						std::cout << "Nu"; 
-					if (to_aff[i] != NULL && to_aff[i]->left != this->_sentinel)
-						to_aff2[t++] = to_aff[i]->left;
-					else
-						to_aff2[t++] = NULL;
-					if (to_aff[i] != NULL && to_aff[i]->right != this->_sentinel)
-						to_aff2[t++] = to_aff[i]->right;
-					else
-						to_aff2[t++] = NULL;
-					if (!(i % 2 == 0))
-						std::cout << "|";
-					else
-						std::cout << " ";
-					i++;
-				}
-				std::cout << '\n';
-				i = 0;
-				t = 0;
-				while (i < size_tab)
-				{
-					if (to_aff2[i++] != NULL)
-						t++;
-				}
-				if (t > 0)
-					put_tree(to_aff2, nbr_tab - 3, size_tab);
-			}
-		}
+		// void	put_tree(ft::node<value_type> *to_aff[] = NULL,
+		// 	size_t nbr_tab = 50, size_t size_tab = 1) const
+		// {
+		// 	if (this->_size == 0)
+		// 	{
+		// 		std::cout << "rb tree size = 0" << std::endl;
+		// 		return ;
+		// 	}
+		// 	size_t i = 0;
+		// 	size_t t = 0;
+		// 	size_t nbr_tab2 = nbr_tab;
+		// 	size_tab *= 2;
+		// 	ft::node<value_type> *to_aff2[size_tab];
+		// 	if (to_aff == NULL)
+		// 	{
+		// 		if (this->_root->left != this->_sentinel)
+		// 			to_aff2[i++] = this->_root->left;
+		// 		else
+		// 			to_aff2[i++] = NULL;
+		// 		if (this->_root->right != this->_sentinel)
+		// 			to_aff2[i++] = this->_root->right;
+		// 		else
+		// 			to_aff2[i++] = NULL;
+		// 		for (int tab = nbr_tab2; tab > 0; --tab)
+		// 			std::cout << ' ';
+		// 		std::cout << this->_root->key_val.first;
+		// 		if (this->_root->color == RED)
+		// 			std::cout << "R\n";
+		// 		else
+		// 			std::cout << "B\n";
+		// 		put_tree(to_aff2, nbr_tab - 2, size_tab);
+		// 	}
+		// 	else
+		// 	{
+		// 		for (int tab = nbr_tab2; tab > 0; --tab)
+		// 			std::cout << ' ';
+		// 		std::cout << '|';
+		// 		while (i < (size_tab / 2))
+		// 		{
+		// 			if (to_aff[i] != NULL)
+		// 			{
+		// 				std::cout << to_aff[i]->key_val.first;
+		// 				if (to_aff[i]->color == RED)
+		// 					std::cout << "R";
+		// 				else
+		// 					std::cout << "B";
+		// 			}
+		// 			else
+		// 				std::cout << "Nu"; 
+		// 			if (to_aff[i] != NULL && to_aff[i]->left != this->_sentinel)
+		// 				to_aff2[t++] = to_aff[i]->left;
+		// 			else
+		// 				to_aff2[t++] = NULL;
+		// 			if (to_aff[i] != NULL && to_aff[i]->right != this->_sentinel)
+		// 				to_aff2[t++] = to_aff[i]->right;
+		// 			else
+		// 				to_aff2[t++] = NULL;
+		// 			if (!(i % 2 == 0))
+		// 				std::cout << "|";
+		// 			else
+		// 				std::cout << " ";
+		// 			i++;
+		// 		}
+		// 		std::cout << '\n';
+		// 		i = 0;
+		// 		t = 0;
+		// 		while (i < size_tab)
+		// 		{
+		// 			if (to_aff2[i++] != NULL)
+		// 				t++;
+		// 		}
+		// 		if (t > 0)
+		// 			put_tree(to_aff2, nbr_tab - 3, size_tab);
+		// 	}
+		// }
 
 		size_t size() const
 		{

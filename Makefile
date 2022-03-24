@@ -6,7 +6,7 @@
 #    By: thoberth <thoberth@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/12/14 12:44:03 by thoberth          #+#    #+#              #
-#    Updated: 2022/02/04 12:37:15 by thoberth         ###   ########.fr        #
+#    Updated: 2022/03/21 18:01:07 by thoberth         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,7 @@ NAME = executable
 
 SRCS = main.cpp
 
-HDR = vector/vector.hpp map/map.hpp stack/stack.hpp
+HDR = containers/vector.hpp containers/map.hpp containers/stack.hpp
 
 OBJS = ${SRCS:.cpp=.o}
 
