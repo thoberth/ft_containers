@@ -6,7 +6,7 @@
 #    By: thoberth <thoberth@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/12/14 12:44:03 by thoberth          #+#    #+#              #
-#    Updated: 2022/03/21 18:01:07 by thoberth         ###   ########.fr        #
+#    Updated: 2022/03/29 00:22:11 by thoberth         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,13 +21,22 @@ RESET = 	\033[0m
 
 CXX = c++
 
-CXXFLAGS = -Wall -Wextra -Werror -std=c++98 -pedantic
+CXXFLAGS = -Wall -Wextra -Werror -pedantic -std=c++98
 
 NAME = executable
 
 SRCS = main.cpp
 
-HDR = containers/vector.hpp containers/map.hpp containers/stack.hpp
+HDR =	containers/vector.hpp\
+		containers/map.hpp\
+		containers/stack.hpp\
+		utils/bidirectional_iterator.hpp\
+		utils/ft_utils.hpp\
+		utils/iterator_traits.hpp\
+		utils/iterator.hpp\
+		utils/random_access_iterator.hpp\
+		utils/red_black_tree.hpp\
+		utils/reverse_iterator.hpp
 
 OBJS = ${SRCS:.cpp=.o}
 
@@ -36,6 +45,14 @@ all: ${NAME}
 main.o : ${HDR}
 
 $(NAME): ${OBJS} ${HDR} ${SRCS}
+	@printf "\n$(BLUE)"
+	@printf "$(BLUE)Compiling files...\n"
+	${CXX} ${CXXFLAGS} ${OBJS} -o ${NAME}
+	@printf "$(GREEN)[$(NAME) done][✔]$(RESET)\n"
+	@printf "\n"
+
+std: ${fclean} ${HDR}
+	${CXX} ${CXXFLAGS} -c -o main.o ${SRCS} -D USING_STD
 	@printf "\n$(BLUE)"
 	@printf "$(BLUE)Compiling files...\n"
 	${CXX} ${CXXFLAGS} ${OBJS} -o ${NAME}

@@ -6,7 +6,7 @@
 /*   By: thoberth <thoberth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/07 16:08:20 by thoberth          #+#    #+#             */
-/*   Updated: 2022/03/21 18:02:03 by thoberth         ###   ########.fr       */
+/*   Updated: 2022/03/28 20:42:15 by thoberth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,6 @@ class red_black_tree
 {
 	public:
 		typedef ft::node<value_type> node_type;
-		typedef typename ft::bidirectional_iterator<node_type, value_type > iterator;
-		typedef typename ft::bidirectional_iterator<const node_type, const value_type > const_iterator;
 
 		class value_compare : public std::binary_function<value_type, value_type, bool>
 			{
@@ -78,22 +76,11 @@ class red_black_tree
 			if (this != &x)
 			{
 				this->destroy_tree();
-				if (x._size == 0)
-					return *this;
-				ft::node<value_type> *to_destroy[x._size];
-				ft::node<value_type> * to_move = x._root;
-				size_t child = 1;
-				size_t parent = 1;
-				to_destroy[0] = x._root;
-
-				while (parent <= x._size)
+				node_type * node = x.minimum(x._root);
+				while (node != x._sentinel)
 				{
-					if (to_move->left != x._sentinel)
-						to_destroy[child++] = to_move->left;
-					if (to_move->right != x._sentinel)
-						to_destroy[child++] = to_move->right;
-					this->insert(to_move->key_val);
-					to_move = to_destroy[parent++];
+					this->insert(node->key_val);
+					node = x.found_next_one(node);
 				}
 			}
 			return (*this);
@@ -152,25 +139,35 @@ class red_black_tree
 			return node;
 		}
 
-		ft::node<value_type>* found_next_one(ft::node<value_type> *node)
+		ft::node<value_type>* found_next_one(ft::node<value_type> *node) const
 		{
-			if (node == maximum(this->_root))
-				return this->_sentinel;
+			if (node == maximum(this->_root) || node == this->_sentinel)
+					return this->_sentinel;
 			if (node->right != this->_sentinel)
 				return (minimum(node->right));
-			while (node != node->parent->left)
-				node = node->parent;
+			if (node != node->parent->left)
+			{
+				while (node != node->parent->left)
+					node = node->parent;
+			}
+			node = node->parent;
 			return node;
 		}
 
 		ft::node<value_type>* found_prec(ft::node<value_type> *node)
 		{
+			if (node == this->_sentinel)
+				return (maximum(this->_root));
 			if (node == minimum(this->_root))
 				return this->_sentinel;
 			if (node->left != this->_sentinel)
 				return (maximum(node->left));
-			while (node != node->parent->right)
-				node = node->parent;
+			if (node != node->parent->right)
+			{
+				while (node != node->parent->right)
+					node = node->parent;
+			}
+			node = node->parent;
 			return node;
 		}
 
