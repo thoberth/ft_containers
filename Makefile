@@ -6,7 +6,7 @@
 #    By: thoberth <thoberth@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/12/14 12:44:03 by thoberth          #+#    #+#              #
-#    Updated: 2022/03/29 00:22:11 by thoberth         ###   ########.fr        #
+#    Updated: 2022/03/29 12:52:37 by thoberth         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,6 +24,8 @@ CXX = c++
 CXXFLAGS = -Wall -Wextra -Werror -pedantic -std=c++98
 
 NAME = executable
+
+NAME_STD = executable_std
 
 SRCS = main.cpp
 
@@ -55,8 +57,8 @@ std: ${fclean} ${HDR}
 	${CXX} ${CXXFLAGS} -c -o main.o ${SRCS} -D USING_STD
 	@printf "\n$(BLUE)"
 	@printf "$(BLUE)Compiling files...\n"
-	${CXX} ${CXXFLAGS} ${OBJS} -o ${NAME}
-	@printf "$(GREEN)[$(NAME) done][✔]$(RESET)\n"
+	${CXX} ${CXXFLAGS} ${OBJS} -o ${NAME_STD}
+	@printf "$(GREEN)[$(NAME_STD) done][✔]$(RESET)\n"
 	@printf "\n"
 
 clean:

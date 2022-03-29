@@ -6,15 +6,19 @@
 /*   By: thoberth <thoberth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/12 12:41:44 by thoberth          #+#    #+#             */
-/*   Updated: 2022/02/16 20:47:40 by thoberth         ###   ########.fr       */
+/*   Updated: 2022/03/29 12:13:40 by thoberth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_UTILS_HPP
 # define FT_UTILS_HPP
 
-# define RED 0
-# define BLACK 1
+// # define RED_NODE 0
+// # define BLACK_NODE 1
+
+# define LIGHTBLUE	"\033[1;34m"
+# define YELLOW		"\033[1;33m"
+# define RESET		"\033[0m"
 
 #include <iostream>
 
