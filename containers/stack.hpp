@@ -6,7 +6,7 @@
 /*   By: thoberth <thoberth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/01 09:45:03 by thoberth          #+#    #+#             */
-/*   Updated: 2022/03/16 12:58:38 by thoberth         ###   ########.fr       */
+/*   Updated: 2022/03/31 18:11:03 by thoberth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,12 @@ namespace ft
 
 			value_type &top() { return my_container.back(); }
 
-			const value_type &top() const { return my_container.back(); }
+			const value_type &top() const
+			{
+				if (!this->size() > 0)
+					return my_container.back();
+				return ;
+			}
 
 			void push(const value_type &val)
 			{

@@ -6,7 +6,7 @@
 /*   By: thoberth <thoberth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/07 16:08:20 by thoberth          #+#    #+#             */
-/*   Updated: 2022/03/28 20:42:15 by thoberth         ###   ########.fr       */
+/*   Updated: 2022/03/31 12:15:49 by thoberth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -405,7 +405,6 @@ class red_black_tree
 					{
 						if (s->right->color == BLACK)
 						{
-							std::cerr << "1.4\n";
 							s->left->color = BLACK;
 							s->color = RED;
 							right_rotate(s->left, s);

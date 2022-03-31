@@ -6,7 +6,7 @@
 #    By: thoberth <thoberth@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/12/14 12:44:03 by thoberth          #+#    #+#              #
-#    Updated: 2022/03/29 12:52:37 by thoberth         ###   ########.fr        #
+#    Updated: 2022/03/31 12:23:33 by thoberth         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,7 @@ RESET = 	\033[0m
 
 CXX = c++
 
-CXXFLAGS = -Wall -Wextra -Werror -pedantic -std=c++98
+CXXFLAGS = -Wall -Wextra -Werror -Wpedantic -std=c++98
 
 NAME = executable
 
@@ -70,7 +70,7 @@ clean:
 fclean: clean
 	@printf "\n"
 	@printf "$(RED)Delete executable file\n"
-	${RM} ${NAME}
+	${RM} ${NAME} ${NAME_STD}
 	@printf "$(RESET)\n"
 
 re: fclean all
