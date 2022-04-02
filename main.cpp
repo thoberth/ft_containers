@@ -6,7 +6,7 @@
 /*   By: thoberth <thoberth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/10 14:48:51 by thoberth          #+#    #+#             */
-/*   Updated: 2022/03/31 18:16:58 by thoberth         ###   ########.fr       */
+/*   Updated: 2022/04/02 11:49:26 by thoberth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -334,7 +334,7 @@ int main()
 	std::cout << "after insert ->\n";
 	print_vector(vec2);
 
-	std::cout << "before insert val of an other vector a end of this vector ->\n";
+	std::cout << "before insert val of an other vector at end of this vector ->\n";
 	print_vector(vec2);
 	std::cout << "vector which is insert ->\n";
 	print_vector(vec);

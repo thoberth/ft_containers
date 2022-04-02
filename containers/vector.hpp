@@ -6,7 +6,7 @@
 /*   By: thoberth <thoberth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 15:27:34 by thoberth          #+#    #+#             */
-/*   Updated: 2022/03/16 12:57:58 by thoberth         ###   ########.fr       */
+/*   Updated: 2022/04/02 11:48:14 by thoberth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -358,7 +358,7 @@ namespace ft {
 
 			while (tmp++ != last)
 				len++;
-			if (len + _size >= _capacity)
+			if (len + _size > _capacity)
 			{
 				if ((this->_capacity * 2) > (this->_capacity + len))
 					reserve(this->_size * 2);
